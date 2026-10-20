@@ -1,0 +1,41 @@
+name: ci
+
+on:
+  push:
+    paths:
+      - "datasets/**"
+      - "support/**"
+      - "tests/**"
+      - "**/*.py"
+      - "**/*.yml"
+      - "**/*.yaml"
+      - "**/*.sql"
+      - "pyproject.toml"
+      - "Makefile"
+  pull_request:
+    paths:
+      - "datasets/**"
+      - "support/**"
+      - "tests/**"
+      - "**/*.py"
+      - "**/*.yml"
+      - "**/*.yaml"
+      - "**/*.sql"
+      - "pyproject.toml"
+      - "Makefile"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dataciviclab/.github/actions/python-setup@main
+        with:
+          install-extras: dev
+      - name: Ruff
+        run: python -m ruff check .
+      - name: Pytest
+        run: python -m pytest tests/ -q

@@ -1,0 +1,111 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "rica_area_redditi"
+  source_id: "rica_crea"
+  tags: [economia, agricoltura, redditi, rica, fadn, aiuti, costi, territori]
+  category: economia
+  description: "RICA/AREA (CREA-PB): risultati economici medi delle aziende agricole italiane, 2008-2024. Redditi, valore aggiunto, costi e aiuti per anno, OTE, dimensione economica e regione. Universo e campione separati."
+  years: [2024]
+  time_coverage:
+    start_year: 2008
+    end_year: 2024
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "rica_area_report_c"
+      type: "script"
+      args:
+        command: "python3 extract.py raw.csv {year}"
+        output: "raw.csv"
+      client:
+        timeout: 600
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: all
+    delim: ","
+    encoding: "utf-8"
+    header: true
+    trim_whitespace: true
+  required_columns:
+    - tipo_dati
+    - stratificazione
+    - anno
+    - territorio_codice
+    - territorio
+    - comparto_codice
+    - comparto
+    - indicatore_codice
+    - indicatore
+    - unita
+    - valore
+    - serie_id
+  validate:
+    min_rows: 800
+    not_null:
+      - tipo_dati
+      - stratificazione
+      - anno
+      - territorio_codice
+      - territorio
+      - comparto_codice
+      - comparto
+      - indicatore_codice
+      - indicatore
+      - unita
+      - valore
+      - metodo_calcolo
+      - qualita
+      - fonte_id
+      - serie_id
+      - copertura
+      - limitazioni
+      - fonte
+      - url
+      - data_accesso
+    primary_key:
+      - tipo_dati
+      - stratificazione
+      - anno
+      - territorio_codice
+      - comparto_codice
+      - indicatore_codice
+
+mart:
+  tables:
+    - name: "mart_redditi_anni"
+      sql: "sql/mart_redditi_anni.sql"
+    - name: "mart_redditi_comparti"
+      sql: "sql/mart_redditi_comparti.sql"
+    - name: "mart_aiuti"
+      sql: "sql/mart_aiuti.sql"
+  required_tables:
+    - "mart_redditi_anni"
+    - "mart_redditi_comparti"
+    - "mart_aiuti"
+  validate:
+    table_rules:
+      mart_redditi_anni:
+        required_columns: [tipo_dati, anno, indicatore_codice, indicatore, unita, valore]
+        primary_key: [tipo_dati, anno, indicatore_codice]
+        min_rows: 200
+      mart_redditi_comparti:
+        required_columns: [stratificazione, territorio_codice, territorio, comparto_codice, comparto, indicatore_codice, indicatore, unita, valore]
+        primary_key: [stratificazione, territorio_codice, comparto_codice, indicatore_codice]
+        min_rows: 500
+      mart_aiuti:
+        required_columns: [stratificazione, territorio_codice, territorio, comparto_codice, comparto, ap1_eur, ap2_eur, rn_eur, incidenza_aiuti_rn_pct]
+        primary_key: [stratificazione, territorio_codice, comparto_codice]
+        min_rows: 30
+
+validation:
+  fail_on_error: true
+
+output:
+  artifacts: standard

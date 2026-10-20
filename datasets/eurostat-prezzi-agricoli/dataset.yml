@@ -1,0 +1,94 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "eurostat_prezzi_agricoli"
+  source_id: "eurostat"
+  tags: [economia, agricoltura, prezzi, eurostat, prezzi-assoluti, filiera]
+  category: economia
+  description: "Prezzi assoluti annuali dei prodotti agricoli alla produzione in Italia, in EUR per 100 kg/litri/pezzi. Copre colture e prodotti animali, 2000-2024. Fonte Eurostat."
+  years: [2024]
+  time_coverage:
+    start_year: 2000
+    end_year: 2024
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "prezzi_colture"
+      type: "sdmx"
+      client:
+        timeout: 180
+        retries: 2
+      args:
+        agency: "ESTAT"
+        flow: "apri_ap_crpouta"
+        filters:
+          geo: "IT"
+          currency: "EUR"
+        filename: "prezzi_colture.csv"
+      primary: true
+    - name: "prezzi_animali"
+      type: "sdmx"
+      client:
+        timeout: 180
+        retries: 2
+      args:
+        agency: "ESTAT"
+        flow: "apri_ap_anouta"
+        filters:
+          geo: "IT"
+          currency: "EUR"
+        filename: "prezzi_animali.csv"
+
+support:
+  - name: prod_veg
+    type: codelist
+    provider: sdmx
+    agency: ESTAT
+    id: PROD_VEG
+  - name: prod_ani
+    type: codelist
+    provider: sdmx
+    agency: ESTAT
+    id: PROD_ANI
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: all
+    delim: ","
+    encoding: "utf-8"
+    header: true
+  required_columns: [anno, gruppo, prodotto_codice, prodotto, unita, valore]
+  validate:
+    min_rows: 500
+    not_null: [anno, gruppo, prodotto_codice, prodotto, unita, valore]
+    primary_key: [anno, gruppo, prodotto_codice]
+
+mart:
+  tables:
+    - name: "mart_prezzi_prodotti"
+      sql: "sql/mart_prezzi_prodotti.sql"
+    - name: "mart_copertura"
+      sql: "sql/mart_copertura.sql"
+  required_tables:
+    - "mart_prezzi_prodotti"
+    - "mart_copertura"
+  validate:
+    table_rules:
+      mart_prezzi_prodotti:
+        required_columns: [anno, filiera, prodotto_codice, prodotto, unita_base, valore_eur_per_unita]
+        primary_key: [anno, prodotto_codice]
+        min_rows: 100
+      mart_copertura:
+        required_columns: [gruppo, prodotto_codice, prodotto, primo_anno, ultimo_anno, n_anni, n_mancanti]
+        primary_key: [gruppo, prodotto_codice]
+        min_rows: 20
+
+validation:
+  fail_on_error: true
+
+output:
+  artifacts: standard

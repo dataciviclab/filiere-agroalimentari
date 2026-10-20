@@ -1,0 +1,120 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "istat_nic_prezzi_consumo"
+  source_id: "istat_dbnomics"
+  tags: [economia, agricoltura, prezzi, consumo, istat, nic, ecoicop]
+  category: economia
+  description: "Indici NIC dei prezzi al consumo per le categorie alimentari ECOICOP, Italia. Base 2015 (2016-2025) e base 2025 (2026+) tenute separate. Fonte ISTAT via DBnomics."
+  years: [2026]
+  time_coverage:
+    start_year: 2016
+    end_year: 2026
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "nic_base2015"
+      type: "dbnomics"
+      client:
+        timeout: 180
+        retries: 2
+      args:
+        provider: "ISTAT"
+        dataset: "167_744_DF_DCSP_NIC1B2015_4"
+        dimensions:
+          FREQ: [M]
+          REF_AREA: [IT]
+          DATA_TYPE: ["39"]
+          MEASURE: ["4"]
+          E_COICOP_REV_ISTAT: ["0111", "0112", "0114", "0115", "0116", "0117"]
+        page_size: 1000
+        max_pages: 10
+        filename: "nic_base2015.csv"
+      primary: true
+    - name: "nic_base2025"
+      type: "dbnomics"
+      client:
+        timeout: 180
+        retries: 2
+      args:
+        provider: "ISTAT"
+        dataset: "167_745_DF_DCSP_NIC1B2025_6"
+        dimensions:
+          FREQ: [M]
+          REF_AREA: [IT]
+          DATA_TYPE: ["85"]
+          MEASURE: ["4"]
+          ECOICOP_2: ["0111", "0112", "0114", "0115", "0116", "0117"]
+        page_size: 1000
+        max_pages: 10
+        filename: "nic_base2025.csv"
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: all
+    delim: ","
+    encoding: "utf-8"
+    header: true
+  required_columns:
+    - base_anno
+    - anno
+    - mese
+    - data
+    - codice
+    - categoria
+    - indice
+    - unita
+    - serie_id
+  validate:
+    min_rows: 700
+    not_null:
+      - base_anno
+      - anno
+      - mese
+      - data
+      - codice
+      - categoria
+      - indice
+      - unita
+      - serie_id
+      - fonte_id
+      - metodo_calcolo
+      - qualita
+      - copertura
+      - limitazioni
+      - fonte
+    primary_key:
+      - base_anno
+      - anno
+      - mese
+      - codice
+
+mart:
+  tables:
+    - name: "mart_prezzi_consumo"
+      sql: "sql/mart_prezzi_consumo.sql"
+    - name: "mart_sintesi"
+      sql: "sql/mart_sintesi.sql"
+  required_tables:
+    - "mart_prezzi_consumo"
+    - "mart_sintesi"
+  validate:
+    table_rules:
+      mart_prezzi_consumo:
+        required_columns: [base_anno, anno, mese, data, codice, categoria, indice, unita, variazione_anno_prec_pct]
+        primary_key: [base_anno, anno, mese, codice]
+        min_rows: 700
+      mart_sintesi:
+        required_columns: [base_anno, codice, categoria, ultimo_anno, ultimo_mese, ultimo_indice, variazione_anno_prec_pct, n_mesi]
+        primary_key: [base_anno, codice]
+        min_rows: 12
+
+validation:
+  fail_on_error: true
+
+output:
+  artifacts: standard

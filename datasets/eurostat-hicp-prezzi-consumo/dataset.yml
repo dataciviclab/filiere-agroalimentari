@@ -1,0 +1,98 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "eurostat_hicp_prezzi_consumo"
+  source_id: "eurostat"
+  tags: [economia, agricoltura, prezzi, consumo, eurostat, hicp, coicop]
+  category: economia
+  description: "Indice armonizzato dei prezzi al consumo (HICP) per le categorie alimentari COICOP, Italia. Benchmark Eurostat separato da NIC e dai prezzi alla produzione."
+  years: [2025]
+  time_coverage:
+    start_year: 2016
+    end_year: 2025
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "hicp_food"
+      type: "sdmx"
+      client:
+        timeout: 180
+        retries: 2
+      args:
+        agency: "ESTAT"
+        flow: "prc_hicp_midx"
+        filters:
+          freq: "M"
+          unit: "I15"
+          coicop: ["CP0111", "CP0112", "CP0114", "CP0115", "CP0116", "CP0117"]
+          geo: "IT"
+        filename: "hicp_food.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: all
+    delim: ","
+    encoding: "utf-8"
+    header: true
+  required_columns:
+    - anno
+    - mese
+    - data
+    - codice
+    - categoria
+    - indice
+    - unita
+    - serie_id
+  validate:
+    min_rows: 600
+    not_null:
+      - anno
+      - mese
+      - data
+      - codice
+      - categoria
+      - indice
+      - unita
+      - serie_id
+      - base_anno
+      - fonte_id
+      - metodo_calcolo
+      - qualita
+      - copertura
+      - limitazioni
+      - fonte
+    primary_key:
+      - anno
+      - mese
+      - codice
+
+mart:
+  tables:
+    - name: "mart_hicp_prezzi"
+      sql: "sql/mart_hicp_prezzi.sql"
+    - name: "mart_hicp_sintesi"
+      sql: "sql/mart_hicp_sintesi.sql"
+  required_tables:
+    - "mart_hicp_prezzi"
+    - "mart_hicp_sintesi"
+  validate:
+    table_rules:
+      mart_hicp_prezzi:
+        required_columns: [anno, mese, data, codice, categoria, indice, unita, variazione_anno_prec_pct]
+        primary_key: [anno, mese, codice]
+        min_rows: 600
+      mart_hicp_sintesi:
+        required_columns: [codice, categoria, ultimo_anno, ultimo_mese, ultimo_indice, variazione_anno_prec_pct, n_mesi]
+        primary_key: [codice]
+        min_rows: 6
+
+validation:
+  fail_on_error: true
+
+output:
+  artifacts: standard

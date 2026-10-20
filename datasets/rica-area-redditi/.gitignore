@@ -1,0 +1,4 @@
+# Raw CSV cache + workbook di audit (mai versionati)
+data/
+raw.csv
+__pycache__/

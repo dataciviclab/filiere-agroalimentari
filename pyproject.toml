@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dataciviclab-filiere-agroalimentari"
+version = "0.1.0"
+description = "Prezzi, costi, redditi e aiuti della filiera agroalimentare italiana"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+
+# duckdb: dipendenza runtime (usata dai test SQL e dal motore).
+# xlrd: usato dall'adapter RICA/AREA per leggere l'export Excel ufficiale.
+# toolkit è CLI esterno → vive nell'extra `pipeline`.
+# lab-connectors arriva transitivamente da toolkit (non si dichiara).
+dependencies = [
+    "duckdb>=1.5.3,<2",
+    "xlrd>=2.0",
+]
+
+# Nessun package Python: il repo è dati + SQL + script.
+# Esplicito per evitare il flat-layout discovery di setuptools.
+[tool.setuptools]
+packages = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "ruff>=0.5",
+    "PyYAML>=6.0",
+]
+pipeline = [
+    "dataciviclab-toolkit @ git+https://github.com/dataciviclab/toolkit.git",
+]
+
+[project.urls]
+Home = "https://github.com/dataciviclab/filiere-agroalimentari"
+
+[tool.toolkit.extends]
+source_id = "filiere_agroalimentari"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "W"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

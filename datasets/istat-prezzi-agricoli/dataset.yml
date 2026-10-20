@@ -1,0 +1,86 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "istat_prezzi_agricoli"
+  source_id: "istat_sdmx"
+  tags: [economia, agricoltura, prezzi, istat, indice, input, output]
+  category: economia
+  description: "Indici mensili dei prezzi dei prodotti venduti e acquistati dagli agricoltori italiani (base 2020=100), per gruppi di prodotto e categorie di input. Fonte ISTAT SDMX."
+  years: [2026]
+  time_coverage:
+    start_year: 2020
+    end_year: 2026
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "prezzi_venduti"
+      type: "sdmx"
+      client:
+        timeout: 180
+        retries: 2
+      args:
+        agency: "IT1"
+        flow: "101_12_DF_DCSP_PREZZIAGR_10"
+        version: "1.0"
+        filters:
+          FREQ: "M"
+          REF_AREA: "IT"
+          DATA_TYPE: "76"
+        filename: "prezzi_venduti.csv"
+      primary: true
+    - name: "prezzi_acquistati"
+      type: "sdmx"
+      client:
+        timeout: 180
+        retries: 2
+      args:
+        agency: "IT1"
+        flow: "101_12_DF_DCSP_PREZZIAGR_9"
+        version: "1.0"
+        filters:
+          FREQ: "M"
+          REF_AREA: "IT"
+          DATA_TYPE: "75"
+        filename: "prezzi_acquistati.csv"
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: all
+    delim: ","
+    encoding: "utf-8"
+    header: true
+  required_columns: [anno, mese, data, tipo, categoria_codice, categoria, indice]
+  validate:
+    min_rows: 3500
+    not_null: [anno, mese, tipo, categoria_codice, indice]
+    primary_key: [anno, mese, tipo, categoria_codice]
+
+mart:
+  tables:
+    - name: "mart_prezzi_mensili"
+      sql: "sql/mart_prezzi_mensili.sql"
+    - name: "mart_ragione_scambio"
+      sql: "sql/mart_ragione_scambio.sql"
+  required_tables:
+    - "mart_prezzi_mensili"
+    - "mart_ragione_scambio"
+  validate:
+    table_rules:
+      mart_prezzi_mensili:
+        required_columns: [anno, mese, data, tipo, categoria_codice, categoria, indice]
+        primary_key: [anno, mese, tipo, categoria_codice]
+        min_rows: 3500
+      mart_ragione_scambio:
+        required_columns: [anno, mese, data, indice_output, indice_input, ragione_scambio]
+        primary_key: [anno, mese]
+        min_rows: 60
+
+validation:
+  fail_on_error: true
+
+output:
+  artifacts: standard

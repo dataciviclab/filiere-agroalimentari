@@ -3,70 +3,87 @@
 **Chi produce cibo riesce a sostenere i costi, ottenere un reddito dignitoso e
 competere sul mercato?**
 
-Questo repo raccoglie i dataset della filiera agroalimentare italiana: prezzi
-alla produzione e input, redditi e aiuti delle aziende agricole, prezzi al
-consumo. È un repo multi-dataset del DataCivicLab.
+[![CI](https://github.com/dataciviclab/filiere-agroalimentari/actions/workflows/ci.yml/badge.svg)](https://github.com/dataciviclab/filiere-agroalimentari/actions/workflows/ci.yml)
 
-- **Stato:** alpha (repo privato)
+Repo multi-dataset del DataCivicLab sulla filiera agroalimentare italiana:
+prezzi alla produzione e input, redditività delle aziende agricole, prezzi al
+consumo e valore aggiunto per stadio.
+
+- **Stato:** alpha
 - **Copertura:** 2000-2026, Italia
-- **Unità:** prodotto/categoria, azienda agricola media, regione
+- **Unità:** prodotto/categoria, azienda agricola media, regione, stadio
 
-## Dataset
+## Cosa contengono
 
-| Slug | Cosa contiene | Anni |
-|---|---|---|
-| `istat-prezzi-agricoli` | Indici mensili prezzi venduti/acquistati, base 2020=100 | 2020-2026 |
-| `eurostat-prezzi-agricoli` | Prezzi assoluti annuali alla produzione, 23 prodotti | 2000-2024 |
-| `rica-area-redditi` | Redditi, VA, costi e aiuti per OTE/dimensione/regione | 2008-2024 |
-| `istat-nic-prezzi-consumo` | NIC mensile, 6 categorie alimentari, basi 2015/2025 | 2016-2026 |
-| `eurostat-hicp-prezzi-consumo` | HICP mensile, 6 categorie alimentari | 2016-2025 |
+| Dataset | Fonte | Cosa contiene | Righe clean | Periodo |
+|---|---|---|---:|---|
+| `istat-prezzi-agricoli` | ISTAT | Indici mensili prezzi venduti/acquistati, 55 serie | 4.290 | 2020-2026 |
+| `eurostat-prezzi-agricoli` | Eurostat | Prezzi assoluti annuali alla produzione, 23 prodotti | 554 | 2000-2024 |
+| `rica-area-redditi` | CREA-PB | Redditi, VA, costi e aiuti per OTE/dimensione/regione | 9.673 | 2008-2024 |
+| `istat-nic-prezzi-consumo` | ISTAT/DBnomics | NIC mensile, 6 categorie, basi 2015/2025 | 762 | 2016-2026 |
+| `eurostat-hicp-prezzi-consumo` | Eurostat | HICP mensile, 6 categorie | 720 | 2016-2025 |
+| `compose/filiere-valore-aggiunto` | RICA + SBS | VA per stadio: agricoltura, trasformazione, retail | 286 mart | 2008-2024 |
 
-## Compose
-
-- `compose/filiere-valore-aggiunto` — valore aggiunto per stadio: agricoltura
-  (RICA), trasformazione e retail (SBS letto da GCS come support external).
+RICA rappresenta circa **566.000 aziende agricole** (universo modellato dal
+campione). Il compose legge SBS già processato da GCS come support `external`.
 
 ## Esempi di domande
 
 - La ragione di scambio output/input si sta aprendo o chiudendo?
-- Quanto pesano gli aiuti sul reddito netto delle aziende, per OTE e dimensione?
+- Quanto pesano gli aiuti sul reddito netto per OTE e dimensione economica?
 - Come cambiano i prezzi al consumo rispetto ai prezzi alla produzione?
 - Quali filiere mostrano dinamiche diverse (cereali, ortofrutta, olio, latte)?
+- Quanto valore aggiunto resta in agricoltura, trasformazione e retail?
 
-## Cosa possiamo dire, e cosa no
+## Come accedere
 
-**Sì:** prezzi alla produzione e input, ragione di scambio, reddito netto e
-incidenza aiuti per OTE/dimensione/regione, trend dei prezzi al consumo.
+### MCP del Lab
 
-**No, con i dati attuali:** margini di prodotto, prezzi retail assoluti
-nazionali, distribuzione dei pagamenti PAC per beneficiario. Le differenze tra
-indici non sono margini; le basi 2015/2020/2025 restano separate.
+Dopo il registry, i dataset sono raggiungibili dal server MCP `dataciviclab`:
+`find` e `explore` per scoprirli, `gcs_query` per interrogare clean/mart.
 
-## Accesso
+### DuckDB / parquet
+
+```python
+import duckdb
+duckdb.sql("""
+    SELECT comparto, rn_eur, aiuti_tot_eur, incidenza_aiuti_rn_pct
+    FROM read_parquet(
+      'gs://dataciviclab-mart/filiere-agroalimentari/rica_area_redditi/2024/mart_aiuti.parquet'
+    )
+    WHERE stratificazione = 'ote'
+    ORDER BY incidenza_aiuti_rn_pct DESC
+""").show()
+```
+
+Bucket: `gs://dataciviclab-clean/filiere-agroalimentari/` e
+`gs://dataciviclab-mart/filiere-agroalimentari/`.
+
+### Locale
 
 ```bash
 pip install -e ".[dev,pipeline]"
-make check       # preflight dei dataset.yml
-make run-all     # RAW → CLEAN → MART
-make test        # pytest
+make check
+make run-all
 ```
 
-Output locali in `out/data/mart/<dataset>/<anno>/`. Il dataset RICA usa
-`type: script`; il `Makefile` esporta `TOOLKIT_ALLOW_SCRIPT_SOURCE=1`.
-
-## Documenti
+## Approfondimenti
 
 - [Pipeline](docs/pipeline.md) — struttura, run, output, CI
 - [Metodologia](docs/metodologia.md) — fonti, basi, decisioni, limiti
 - [Dataset registry](docs/dataset-registry.md) — dataset, mart, colonne, serie
+- [Discussions](https://github.com/dataciviclab/filiere-agroalimentari/discussions)
+
+## Cosa non possiamo dire
+
+Con i dati attuali non ricostruiamo margini di prodotto, prezzi retail assoluti
+nazionali o distribuzione PAC per beneficiario. Le differenze tra indici non
+sono margini; basi 2015/2020/2025 restano separate.
 
 ## Partecipa
 
-- **Discussions** — domande, interpretazioni, proposte
+- **Discussions** — domande, interpretazioni, proposte di metriche
 - **Issues** — bug, task e blocchi operativi
-
-Il repo è privato in alpha. La pubblicazione su Explorer arriverà dopo la
-chiusura dei gap su retail assoluto e PAC beneficiari.
 
 ## License
 

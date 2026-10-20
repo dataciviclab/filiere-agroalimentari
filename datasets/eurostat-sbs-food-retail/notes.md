@@ -9,15 +9,21 @@
 
 Entrambi i dataflow sono Eurostat SBS, `geo=IT`, NACE food retail core.
 
-## Perché uno script e non `type: sdmx`
+## Perché uno script e non `type: sdmx` (per ora)
 
-Il plugin `sdmx` del toolkit legge un singolo dataflow SDMX e filtra le
-dimensioni di serie. Qui servono due dataflow con nomi diversi delle dimensioni
-e degli indicatori (`indic_sb` vs `indic_sbs`), e va costruito uno schema
-unificato con un flag di definizione del costo del lavoro. Il payload Eurostat
-è JSON-stat, non SDMX-ML/CSV: `extract.py` fa il flatten e la normalizzazione in
-modo esplicito e testabile. Se in futuro il toolkit espone un plugin JSON-stat
-per SBS, questo adapter può essere migrato.
+Il plugin `sdmx` con profilo ESTAT è la strada giusta in principio: normalizza
+il TSV Eurostat in long. Oggi però non copre questi due flow:
+
+- `sbs_na_dt_r2`: l'endpoint constraints restituisce un payload non-JSON; il
+  plugin abortisce invece di fallback a constraints vuoti.
+- `sbs_ovw_act`: constraints vuoti; la key viene costruita nell'ordine dei
+  filtri. Senza `freq` e con `geo` prima, il server risponde HTTP 400.
+
+Verificato live: con key completa `A.<nace>.<indicatore>.IT` entrambi i flow
+rispondono TSV, quindi lo script è un workaround, non una necessità assoluta.
+Quando il toolkit gestisce il fallback constraints e l'ordine delle dimensioni,
+si può migrare a due source `type: sdmx` + clean union. Fino ad allora
+`extract.py` usa l'API JSON-stat e rende esplicita la normalizzazione.
 
 ## Perché lo splice 2020/2021
 

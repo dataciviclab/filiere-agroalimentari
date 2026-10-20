@@ -26,8 +26,9 @@
 
 Solo la trasformazione SBS è già pubblicata su GCS dalla pipeline di
 `dataset-incubator`; non la duplichiamo nel repo. Il retail alimentare è locale
-perché nasce da due dataflow Eurostat JSON-stat e richiede una normalizzazione
-esplicita. Se il path SBS cambia, aggiornare l'URI e rifare `make check`.
+perché oggi il plugin ESTAT non copre ancora i due flow SBS; quando il toolkit
+lo supporterà, si potrà migrare a `type: sdmx`. Se il path SBS cambia,
+aggiornare l'URI e rifare `make check`.
 
 ## Limiti
 

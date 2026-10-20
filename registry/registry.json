@@ -206,6 +206,150 @@
       ]
     },
     {
+      "slug": "eurostat_sbs_food_retail",
+      "name": "Eurostat Sbs Food Retail",
+      "description": "Retail alimentare italiano: valore aggiunto, costo del lavoro, ore e imprese per NACE 4711, 4721-4725, 4729 e 4781. Fonti Eurostat SBS (sbs_na_dt_r2 2008-2020; sbs_ovw_act 2021-2024).",
+      "source": "",
+      "source_id": "eurostat_sbs",
+      "period": {
+        "start": 2008,
+        "end": 2024
+      },
+      "tags": [
+        "economia",
+        "agricoltura",
+        "filiera",
+        "retail",
+        "alimentare",
+        "sbs",
+        "eurostat"
+      ],
+      "category": "economia",
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "year"
+        },
+        {
+          "name": "nace_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "nace",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "segmento",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "va_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "costo_lavoro_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "ore",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "imprese",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "quota_lavoro_pct",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "va_per_ora_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "fonte",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "fonte_dataset",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "definizione_costo_lavoro",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "nota",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/filiere-agroalimentari/eurostat_sbs_food_retail/2024/eurostat_sbs_food_retail_2024_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "eurostat_sbs_food_retail__mart_retail_alimentare",
+        "eurostat_sbs_food_retail__mart_retail_alimentare_dettaglio"
+      ]
+    },
+    {
+      "slug": "filiere_valore_aggiunto",
+      "name": "Filiere Valore Aggiunto",
+      "description": "Valore aggiunto per stadio della filiera agroalimentare: agricoltura (RICA), trasformazione (SBS NACE 10/11/12) e retail alimentare (Eurostat SBS 4711 + 4721-4725 + 4729 + 4781).",
+      "source": "",
+      "source_id": "dataciviclab_composite",
+      "period": {
+        "start": 2008,
+        "end": 2024
+      },
+      "tags": [
+        "economia",
+        "agricoltura",
+        "filiera",
+        "valore-aggiunto",
+        "compose",
+        "sbs",
+        "rica"
+      ],
+      "category": "economia",
+      "stage": "incubating",
+      "mart_refs": [
+        "filiere_valore_aggiunto__mart_filiere_stadi",
+        "filiere_valore_aggiunto__mart_filiere_dettaglio"
+      ]
+    },
+    {
       "slug": "istat_nic_prezzi_consumo",
       "name": "Istat Nic Prezzi Consumo",
       "description": "Indici NIC dei prezzi al consumo per le categorie alimentari ECOICOP, Italia. Base 2015 (2016-2025) e base 2025 (2026+) tenute separate. Fonte ISTAT via DBnomics.",
@@ -613,6 +757,26 @@
       }
     },
     {
+      "slug": "eurostat_sbs_food_retail__mart_retail_alimentare",
+      "dataset": "eurostat_sbs_food_retail",
+      "table": "mart_retail_alimentare",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/filiere-agroalimentari/eurostat_sbs_food_retail/2024/mart_retail_alimentare.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "eurostat_sbs_food_retail__mart_retail_alimentare_dettaglio",
+      "dataset": "eurostat_sbs_food_retail",
+      "table": "mart_retail_alimentare_dettaglio",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/filiere-agroalimentari/eurostat_sbs_food_retail/2024/mart_retail_alimentare_dettaglio.parquet",
+        "multi_file": false
+      }
+    },
+    {
       "slug": "filiere_valore_aggiunto__mart_filiere_dettaglio",
       "dataset": "filiere_valore_aggiunto",
       "table": "mart_filiere_dettaglio",
@@ -712,21 +876,21 @@
       "detail": "anno 2024 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261020T190333Z_fcfeb481",
+        "run_id": "20261020T220656Z_07a16310",
         "year": 2024,
         "status": "SUCCESS",
         "quality_score": {
           "mart": 100
         },
         "output_rows": {
-          "mart": 286
+          "mart": 404
         },
         "output_bytes": {
-          "mart": 12264
+          "mart": 15607
         },
-        "started_at": "2026-10-20T19:03:33.303552+00:00",
-        "finished_at": "2026-10-20T19:03:35.552485+00:00",
-        "duration_seconds": 2.249
+        "started_at": "2026-10-20T22:06:56.228023+00:00",
+        "finished_at": "2026-10-20T22:06:57.420007+00:00",
+        "duration_seconds": 1.192
       }
     },
     {
@@ -737,7 +901,7 @@
       "detail": "anno 2025 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261020T190052Z_c5f210c4",
+        "run_id": "20261020T220405Z_c24fa9b5",
         "year": 2025,
         "status": "SUCCESS",
         "quality_score": {
@@ -753,11 +917,11 @@
         "output_bytes": {
           "raw": 66142,
           "clean": 6601,
-          "mart": 10653
+          "mart": 10615
         },
-        "started_at": "2026-10-20T19:00:52.502522+00:00",
-        "finished_at": "2026-10-20T19:00:54.104400+00:00",
-        "duration_seconds": 1.602
+        "started_at": "2026-10-20T22:04:05.688916+00:00",
+        "finished_at": "2026-10-20T22:04:07.408707+00:00",
+        "duration_seconds": 1.72
       }
     },
     {
@@ -768,7 +932,7 @@
       "detail": "anno 2024 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261020T190055Z_8e592c22",
+        "run_id": "20261020T220408Z_ac9c1bbb",
         "year": 2024,
         "status": "SUCCESS",
         "quality_score": {
@@ -784,11 +948,42 @@
         "output_bytes": {
           "raw": 17977,
           "clean": 4404,
-          "mart": 7874
+          "mart": 7865
         },
-        "started_at": "2026-10-20T19:00:55.363331+00:00",
-        "finished_at": "2026-10-20T19:00:57.632647+00:00",
-        "duration_seconds": 2.269
+        "started_at": "2026-10-20T22:04:08.583072+00:00",
+        "finished_at": "2026-10-20T22:04:10.865879+00:00",
+        "duration_seconds": 2.283
+      }
+    },
+    {
+      "id": "eurostat_sbs_food_retail",
+      "source_id": "eurostat_sbs",
+      "status": "ok",
+      "label": "eurostat_sbs_food_retail",
+      "detail": "anno 2024 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261020T220411Z_4d5f415c",
+        "year": 2024,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 135,
+          "clean": 135,
+          "mart": 152
+        },
+        "output_bytes": {
+          "raw": 14202,
+          "clean": 6144,
+          "mart": 9885
+        },
+        "started_at": "2026-10-20T22:04:11.286331+00:00",
+        "finished_at": "2026-10-20T22:04:12.538939+00:00",
+        "duration_seconds": 1.253
       }
     },
     {
@@ -799,7 +994,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261020T190057Z_f37aa512",
+        "run_id": "20261020T220412Z_0cd641ce",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -815,11 +1010,11 @@
         "output_bytes": {
           "raw": 60347,
           "clean": 7126,
-          "mart": 11657
+          "mart": 11566
         },
-        "started_at": "2026-10-20T19:00:57.934516+00:00",
-        "finished_at": "2026-10-20T19:01:04.856912+00:00",
-        "duration_seconds": 6.922
+        "started_at": "2026-10-20T22:04:12.972364+00:00",
+        "finished_at": "2026-10-20T22:04:16.636665+00:00",
+        "duration_seconds": 3.664
       }
     },
     {
@@ -830,7 +1025,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261020T190105Z_195608d9",
+        "run_id": "20261020T220417Z_7624fa75",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -846,11 +1041,11 @@
         "output_bytes": {
           "raw": 664668,
           "clean": 14049,
-          "mart": 36628
+          "mart": 36650
         },
-        "started_at": "2026-10-20T19:01:05.180534+00:00",
-        "finished_at": "2026-10-20T19:01:19.212449+00:00",
-        "duration_seconds": 14.032
+        "started_at": "2026-10-20T22:04:17.064312+00:00",
+        "finished_at": "2026-10-20T22:04:36.554035+00:00",
+        "duration_seconds": 19.49
       }
     },
     {
@@ -861,7 +1056,7 @@
       "detail": "anno 2024 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261020T190119Z_6bc1c9f9",
+        "run_id": "20261020T220436Z_3ff5e139",
         "year": 2024,
         "status": "SUCCESS",
         "quality_score": {
@@ -875,13 +1070,13 @@
           "mart": 10285
         },
         "output_bytes": {
-          "raw": 2763538,
-          "clean": 89925,
-          "mart": 76509
+          "raw": 2763545,
+          "clean": 89924,
+          "mart": 76510
         },
-        "started_at": "2026-10-20T19:01:19.503544+00:00",
-        "finished_at": "2026-10-20T19:03:32.980304+00:00",
-        "duration_seconds": 133.477
+        "started_at": "2026-10-20T22:04:36.984232+00:00",
+        "finished_at": "2026-10-20T22:06:55.789308+00:00",
+        "duration_seconds": 138.805
       }
     }
   ],
@@ -941,6 +1136,12 @@
             "semantic_type": "year"
           },
           {
+            "slug": "eurostat_sbs_food_retail",
+            "name": "Eurostat Sbs Food Retail",
+            "column": "anno",
+            "semantic_type": "year"
+          },
+          {
             "slug": "istat_nic_prezzi_consumo",
             "name": "Istat Nic Prezzi Consumo",
             "column": "anno",
@@ -972,7 +1173,7 @@
           }
         ],
         "types": {
-          "year": 5,
+          "year": 6,
           "month": 3
         }
       }

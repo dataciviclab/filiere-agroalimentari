@@ -39,12 +39,12 @@ mart:
     table_rules:
       mart_filiere_stadi:
         required_columns:
-          [anno, stadio, va_eur, costo_lavoro_eur, quota_lavoro_pct, fonte]
+          [anno, stadio, va_eur, costo_lavoro_eur, quota_lavoro_pct, fonte, definizione_costo_lavoro]
         primary_key: [anno, stadio]
         min_rows: 30
       mart_filiere_dettaglio:
         required_columns:
-          [anno, stadio, classificazione, codice, nome, va_eur, quota_lavoro_pct, fonte]
+          [anno, stadio, classificazione, codice, nome, va_eur, quota_lavoro_pct, fonte, definizione_costo_lavoro]
         primary_key: [anno, stadio, classificazione, codice]
         min_rows: 100
 

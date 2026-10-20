@@ -15,7 +15,8 @@ Somma di NACE:
 - `4729` altri alimentari specializzati
 - `4781` mercati e banchi alimentari
 
-Esclusi: tabacco (`4726`), non-food (`4719`), online (`479`).
+Esclusi: tabacco (`4726`), commercio non-food (`4719`), online (`479`).
+`4711` è *predominantly food* e può includere assortimenti non-food.
 
 ## Fonti
 

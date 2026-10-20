@@ -48,6 +48,12 @@ def test_food_retail_adapter_present() -> None:
 
 
 @pytest.mark.contract
+def test_dataset_notes_present() -> None:
+    for slug in EXPECTED_DATASETS:
+        assert (ROOT / "datasets" / slug / "notes.md").is_file(), f"{slug}: manca notes.md"
+
+
+@pytest.mark.contract
 def test_expected_composes_present() -> None:
     dirs = {p.name for p in (ROOT / "compose").iterdir() if p.is_dir()}
     assert dirs == EXPECTED_COMPOSES, f"Compose inattesi: {dirs ^ EXPECTED_COMPOSES}"
@@ -68,4 +74,5 @@ def test_compose_uses_food_retail() -> None:
     config = (base / "dataset.yml").read_text(encoding="utf-8")
     assert "support.food_retail" in sql
     assert "retail_alimentare" in sql
+    assert "definizione_costo_lavoro" in sql
     assert "food_retail" in config

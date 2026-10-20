@@ -1,6 +1,7 @@
 -- Retail alimentare: aggregato annuo del perimetro food retail core.
--- Il perimetro esclude online, tabacco e non-food; 2022 ha 7/8 NACE per
--- riservatezza Eurostat su 4781.
+-- Il perimetro esclude online, tabacco e commercio non-food; 4711 e'
+-- predominantly food e puo' includere assortimenti non-food.
+-- 2022 ha 7/8 NACE per riservatezza Eurostat su 4781.
 
 SELECT
     anno,
@@ -15,7 +16,7 @@ SELECT
     MAX(fonte) AS fonte,
     MAX(fonte_dataset) AS fonte_dataset,
     MAX(definizione_costo_lavoro) AS definizione_costo_lavoro,
-    'Retail alimentare core: NACE 4711 + 4721-4725 + 4729 + 4781; esclusi tabacco, non-food e online.' AS nota
+    'Retail alimentare core: NACE 4711 + 4721-4725 + 4729 + 4781; esclusi tabacco, commercio non-food e online. 4711 puo'' includere assortimenti non-food.' AS nota
 FROM clean_input
 GROUP BY anno
 ORDER BY anno

@@ -1,7 +1,8 @@
 -- Eurostat SBS — perimetro retail alimentare.
 -- Fonti: sbs_na_dt_r2 (2008-2020) + sbs_ovw_act (2021-2024).
 -- NACE: 4711 + 4721 + 4722 + 4723 + 4724 + 4725 + 4729 + 4781.
--- Esclusi: tabacco 4726, non-food 4719, online 479.
+-- Esclusi: tabacco 4726, commercio non-food 4719, online 479.
+-- 4711 e' predominantly food e puo' includere assortimenti non-food.
 
 WITH base AS (
     SELECT

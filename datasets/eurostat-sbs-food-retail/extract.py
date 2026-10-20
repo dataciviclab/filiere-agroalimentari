@@ -7,7 +7,8 @@ Due dataset Eurostat coprono periodi diversi:
 
 Il perimetro food retail e' la somma di NACE:
   4711 + 4721 + 4722 + 4723 + 4724 + 4725 + 4729 + 4781
-Sono esclusi tabacco (4726), non-food (4719) e online (479).
+Sono esclusi tabacco (4726), commercio non-food (4719) e online (479).
+4711 e' predominantly food e puo' includere assortimenti non-food.
 
 Uso (toolkit raw source):
     python3 extract.py raw.csv

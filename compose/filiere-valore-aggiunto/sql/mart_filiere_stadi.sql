@@ -24,6 +24,7 @@ agricoltura AS (
         SUM(COALESCE(aziende, 0)) AS imprese,
         'RICA-CREA AREA' AS fonte,
         'modelled_universe' AS metodo,
+        'rica_costo_lavoro' AS definizione_costo_lavoro,
         'Stima modellata dal campione RICA; medie aziendali per OTE.' AS note
     FROM rica
     GROUP BY anno
@@ -39,6 +40,7 @@ sbs AS (
         SUM(imprese) AS imprese,
         'ISTAT SBS' AS fonte,
         'survey' AS metodo,
+        'istat_sbs_personnel_costs' AS definizione_costo_lavoro,
         'SBS; imprese con dipendenti; NACE 10/11/12.' AS note
     FROM read_parquet('{support.sbs_filiere.path}')
     WHERE anno BETWEEN 2008 AND {year}
@@ -56,6 +58,7 @@ retail AS (
         imprese,
         fonte,
         'survey' AS metodo,
+        definizione_costo_lavoro,
         nota AS note
     FROM read_parquet('{support.food_retail.mart.mart_retail_alimentare}')
     WHERE anno BETWEEN 2008 AND {year}
@@ -80,6 +83,7 @@ SELECT
     ROUND(va_eur / NULLIF(ore, 0), 2) AS va_per_ora_eur,
     fonte,
     metodo,
+    definizione_costo_lavoro,
     note
 FROM unione
 ORDER BY anno, stadio

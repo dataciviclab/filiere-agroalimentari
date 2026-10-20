@@ -33,6 +33,7 @@ agricoltura AS (
         NULL::DOUBLE AS va_per_ora_eur,
         'RICA-CREA AREA' AS fonte,
         'modelled_universe' AS metodo,
+        'rica_costo_lavoro' AS definizione_costo_lavoro,
         'Stima modellata; media aziendale per OTE.' AS note
     FROM rica
 ),
@@ -56,6 +57,7 @@ sbs AS (
         END AS va_per_ora_eur,
         'ISTAT SBS' AS fonte,
         'survey' AS metodo,
+        'istat_sbs_personnel_costs' AS definizione_costo_lavoro,
         'SBS; imprese con dipendenti.' AS note
     FROM read_parquet('{support.sbs_filiere.path}')
     WHERE anno BETWEEN 2008 AND {year}
@@ -77,6 +79,7 @@ retail AS (
         va_per_ora_eur,
         fonte,
         'survey' AS metodo,
+        definizione_costo_lavoro,
         nota AS note
     FROM read_parquet('{support.food_retail.mart.mart_retail_alimentare_dettaglio}')
     WHERE anno BETWEEN 2008 AND {year}
@@ -96,6 +99,7 @@ SELECT
     ROUND(va_per_ora_eur, 2) AS va_per_ora_eur,
     fonte,
     metodo,
+    definizione_costo_lavoro,
     note
 FROM (
     SELECT * FROM agricoltura

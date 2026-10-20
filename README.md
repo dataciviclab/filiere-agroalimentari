@@ -80,7 +80,8 @@ make run-all
 
 Con i dati attuali non ricostruiamo margini di prodotto, prezzi retail assoluti
 nazionali o distribuzione PAC per beneficiario. Il retail alimentare è un core
-proxy: esclude online, tabacco e non-food. Le differenze tra indici non sono
+proxy: esclude online, tabacco e commercio non-food; `4711` è *predominantly
+food* e può includere assortimenti non-food. Le differenze tra indici non sono
 margini; basi 2015/2020/2025 restano separate.
 
 ## Partecipa

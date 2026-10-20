@@ -32,12 +32,13 @@ Catalogo dei dataset e dei mart del repo. Il registry pubblico è
 - **NIC/HICP**: `base_anno`, `codice`, `categoria`, `indice`; i mart aggiungono
   `variazione_anno_prec_pct` e `variazione_mese_prec_pct`.
 - **Eurostat SBS food retail**: `anno`, `nace_codice`, `nace`, `va_eur`,
-  `costo_lavoro_eur`, `ore`, `imprese`, `quota_lavoro_pct`, `va_per_ora_eur`;
-  il mart aggregato aggiunge `nace_coperti` e `perimetro_completo`.
+  `costo_lavoro_eur`, `ore`, `imprese`, `quota_lavoro_pct`, `va_per_ora_eur`,
+  `definizione_costo_lavoro`; il mart aggregato aggiunge `nace_coperti` e
+  `perimetro_completo`.
 - **Compose filiere**: `stadio` (`agricoltura`, `trasformazione`,
   `retail_alimentare`), `va_eur`, `costo_lavoro_eur`, `ore`, `imprese`,
-  `quota_lavoro_pct`, `va_per_ora_eur`; il dettaglio aggiunge `classificazione`,
-  `codice`, `nome`.
+  `quota_lavoro_pct`, `va_per_ora_eur`, `definizione_costo_lavoro`; il dettaglio
+  aggiunge `classificazione`, `codice`, `nome`.
 
 ## Serie e unità
 
@@ -59,5 +60,6 @@ Unità ammesse: `indice_2015_100`, `indice_2020_100`, `indice_2025_100`,
 - Non unire basi diverse (2015/2020/2025).
 - Non fare join su etichette: usa codici e classificazione.
 - Non leggere NACE 47 totale come retail alimentare: usa `retail_alimentare`.
-- Il perimetro food retail esclude tabacco, non-food e online; nel 2022 copre
+- Il perimetro food retail esclude tabacco, commercio non-food e online; `4711`
+  è *predominantly food* e può includere assortimenti non-food. Nel 2022 copre
   7/8 NACE per riservatezza Eurostat su 4781.

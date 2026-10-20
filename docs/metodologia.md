@@ -37,8 +37,9 @@ RICA-CREA; non uso commerciale.
 7. **Compose per stadio**: agricoltura da RICA (OTE), trasformazione da SBS
    (NACE 10/11/12), retail alimentare da Eurostat SBS (NACE 4711 + 4721-4725 +
    4729 + 4781). Non è un margine di prodotto.
-8. **Retail alimentare core**: esclude tabacco (4726), non-food (4719) e online
-   (479). Il 2022 ha 7/8 NACE per riservatezza Eurostat su 4781.
+8. **Retail alimentare core**: esclude tabacco (4726), commercio non-food (4719)
+   e online (479). `4711` è *predominantly food* e può includere assortimenti
+   non-food. Il 2022 ha 7/8 NACE per riservatezza Eurostat su 4781.
 
 ## Revisioni e qualità
 

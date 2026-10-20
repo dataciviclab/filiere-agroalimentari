@@ -2,20 +2,22 @@
 
 ## Cosa fa
 
-Unisce due fonti già processate per leggere il valore aggiunto della filiera
+Unisce fonti già processate per leggere il valore aggiunto della filiera
 agroalimentare per **stadio**, non per prodotto:
 
 - **agricoltura** ← RICA/AREA (OTE, universo)
-- **trasformazione** ← SBS NACE 10+11+12
-- **retail** ← SBS NACE 47
+- **trasformazione** ← ISTAT SBS NACE 10+11+12
+- **retail alimentare** ← Eurostat SBS NACE 4711 + 4721-4725 + 4729 + 4781
 
-SBS non è nel repo: viene letto da GCS come support `external`.
+La trasformazione SBS è nel repo `dataset-incubator` e viene letta da GCS come
+support `external`. Il retail alimentare è il dataset locale
+`eurostat-sbs-food-retail`.
 
 ## Output
 
 - `mart_filiere_stadi`: una riga per stadio, 2008-2024, con VA, costo del lavoro,
-  ore, imprese, quota lavoro e VA per ora.
-- `mart_filiere_dettaglio`: OTE RICA e NACE SBS, stessi indicatori.
+  ore, imprese, quota lavoro, VA per ora e `definizione_costo_lavoro`.
+- `mart_filiere_dettaglio`: OTE RICA e NACE SBS/Eurostat SBS, stessi indicatori.
 
 ## Limiti
 
@@ -24,6 +26,10 @@ SBS non è nel repo: viene letto da GCS come support `external`.
 - SBS: imprese con dipendenti; non copre l'agricoltura (`A`/`01`).
 - Non è un margine di filiera: è un aggregato per stadio.
 - 2008-2024; SBS può avere anni mancanti in alcune combinazioni.
+- Retail alimentare: core proxy; esclude online, tabacco e commercio non-food.
+  `4711` è *predominantly food* e può includere assortimenti non-food.
+- 2008-2020 usa `personnel costs`; 2021-2024 `employee benefits expense`:
+  `definizione_costo_lavoro` segnala il break nella serie aggregata.
 
 ## Support external
 

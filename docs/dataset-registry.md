@@ -10,12 +10,13 @@ Catalogo dei dataset e dei mart del repo. Il registry pubblico è
 | `rica-area-redditi` | CREA RICA | 2008-2024 | anno × OTE/dimensione/regione | `mart_redditi_anni`, `mart_redditi_comparti`, `mart_aiuti` |
 | `istat-nic-prezzi-consumo` | ISTAT/DBnomics | 2016-2026 | mese × ECOICOP | `mart_prezzi_consumo`, `mart_sintesi` |
 | `eurostat-hicp-prezzi-consumo` | Eurostat | 2016-2025 | mese × COICOP | `mart_hicp_prezzi`, `mart_hicp_sintesi` |
+| `eurostat-sbs-food-retail` | Eurostat SBS | 2008-2024 | anno × NACE food retail | `mart_retail_alimentare`, `mart_retail_alimentare_dettaglio` |
 
 ### Compose
 
 | Compose | Fonti | Periodo | Output |
 |---|---|---|---|
-| `compose/filiere-valore-aggiunto` | RICA (agricoltura) + SBS (10/11/12/47, external GCS) | 2008-2024 | `mart_filiere_stadi`, `mart_filiere_dettaglio` |
+| `compose/filiere-valore-aggiunto` | RICA (agricoltura) + SBS (10/11/12, external GCS) + Eurostat SBS (retail alimentare) | 2008-2024 | `mart_filiere_stadi`, `mart_filiere_dettaglio` |
 
 ## Colonne chiave
 
@@ -30,9 +31,14 @@ Catalogo dei dataset e dei mart del repo. Il registry pubblico è
   `ap1_eur`, `ap2_eur`, `rn_eur`, `incidenza_aiuti_rn_pct`.
 - **NIC/HICP**: `base_anno`, `codice`, `categoria`, `indice`; i mart aggiungono
   `variazione_anno_prec_pct` e `variazione_mese_prec_pct`.
-- **Compose filiere**: `stadio`, `va_eur`, `costo_lavoro_eur`, `ore`, `imprese`,
-  `quota_lavoro_pct`, `va_per_ora_eur`; il dettaglio aggiunge `classificazione`,
-  `codice`, `nome`.
+- **Eurostat SBS food retail**: `anno`, `nace_codice`, `nace`, `va_eur`,
+  `costo_lavoro_eur`, `ore`, `imprese`, `quota_lavoro_pct`, `va_per_ora_eur`,
+  `definizione_costo_lavoro`; il mart aggregato aggiunge `nace_coperti` e
+  `perimetro_completo`.
+- **Compose filiere**: `stadio` (`agricoltura`, `trasformazione`,
+  `retail_alimentare`), `va_eur`, `costo_lavoro_eur`, `ore`, `imprese`,
+  `quota_lavoro_pct`, `va_per_ora_eur`, `definizione_costo_lavoro`; il dettaglio
+  aggiunge `classificazione`, `codice`, `nome`.
 
 ## Serie e unità
 
@@ -53,3 +59,7 @@ Unità ammesse: `indice_2015_100`, `indice_2020_100`, `indice_2025_100`,
 - Non unire universo e campione RICA.
 - Non unire basi diverse (2015/2020/2025).
 - Non fare join su etichette: usa codici e classificazione.
+- Non leggere NACE 47 totale come retail alimentare: usa `retail_alimentare`.
+- Il perimetro food retail esclude tabacco, commercio non-food e online; `4711`
+  è *predominantly food* e può includere assortimenti non-food. Nel 2022 copre
+  7/8 NACE per riservatezza Eurostat su 4781.

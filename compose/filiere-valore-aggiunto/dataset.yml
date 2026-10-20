@@ -6,7 +6,7 @@ dataset:
   source_id: "dataciviclab_composite"
   tags: [economia, agricoltura, filiera, valore-aggiunto, compose, sbs, rica]
   category: economia
-  description: "Valore aggiunto per stadio della filiera agroalimentare: agricoltura (RICA), trasformazione e retail (SBS)."
+  description: "Valore aggiunto per stadio della filiera agroalimentare: agricoltura (RICA), trasformazione (SBS NACE 10/11/12) e retail alimentare (Eurostat SBS 4711 + 4721-4725 + 4729 + 4781)."
   years: [2024]
   time_coverage:
     start_year: 2008
@@ -20,6 +20,10 @@ support:
   - name: sbs_filiere
     type: external
     uri: "https://storage.googleapis.com/dataciviclab-mart/istat_sbs_imprese/{year}/mart_sbs_filiere.parquet"
+    years: [2024]
+  - name: food_retail
+    type: dataset
+    config: "../../datasets/eurostat-sbs-food-retail/dataset.yml"
     years: [2024]
 
 mart:
@@ -35,12 +39,12 @@ mart:
     table_rules:
       mart_filiere_stadi:
         required_columns:
-          [anno, stadio, va_eur, costo_lavoro_eur, quota_lavoro_pct, fonte]
+          [anno, stadio, va_eur, costo_lavoro_eur, quota_lavoro_pct, fonte, definizione_costo_lavoro]
         primary_key: [anno, stadio]
         min_rows: 30
       mart_filiere_dettaglio:
         required_columns:
-          [anno, stadio, classificazione, codice, nome, va_eur, quota_lavoro_pct, fonte]
+          [anno, stadio, classificazione, codice, nome, va_eur, quota_lavoro_pct, fonte, definizione_costo_lavoro]
         primary_key: [anno, stadio, classificazione, codice]
         min_rows: 100
 

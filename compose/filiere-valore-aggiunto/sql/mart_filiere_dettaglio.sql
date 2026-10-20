@@ -1,6 +1,6 @@
--- Dettaglio per stadio: OTE RICA (agricoltura) + NACE SBS (trasformazione/retail).
+-- Dettaglio per stadio: OTE RICA (agricoltura), NACE SBS (trasformazione)
+-- e NACE Eurostat SBS (retail alimentare).
 -- Unità: euro, ore, imprese; quota lavoro in percentuale.
--- Agricoltura: VA/CL medi per azienda × aziende rappresentate.
 
 WITH rica AS (
     SELECT
@@ -33,6 +33,7 @@ agricoltura AS (
         NULL::DOUBLE AS va_per_ora_eur,
         'RICA-CREA AREA' AS fonte,
         'modelled_universe' AS metodo,
+        'rica_costo_lavoro' AS definizione_costo_lavoro,
         'Stima modellata; media aziendale per OTE.' AS note
     FROM rica
 ),
@@ -40,7 +41,7 @@ agricoltura AS (
 sbs AS (
     SELECT
         anno,
-        CASE WHEN nace_codice = '47' THEN 'retail' ELSE 'trasformazione' END AS stadio,
+        'trasformazione' AS stadio,
         'NACE' AS classificazione,
         nace_codice AS codice,
         nace AS nome,
@@ -56,10 +57,32 @@ sbs AS (
         END AS va_per_ora_eur,
         'ISTAT SBS' AS fonte,
         'survey' AS metodo,
+        'istat_sbs_personnel_costs' AS definizione_costo_lavoro,
         'SBS; imprese con dipendenti.' AS note
     FROM read_parquet('{support.sbs_filiere.path}')
     WHERE anno BETWEEN 2008 AND {year}
-      AND nace_codice IN ('10', '11', '12', '47')
+      AND nace_codice IN ('10', '11', '12')
+),
+
+retail AS (
+    SELECT
+        anno,
+        'retail_alimentare' AS stadio,
+        'NACE' AS classificazione,
+        nace_codice AS codice,
+        nace AS nome,
+        va_eur,
+        costo_lavoro_eur,
+        ore,
+        imprese,
+        quota_lavoro_pct,
+        va_per_ora_eur,
+        fonte,
+        'survey' AS metodo,
+        definizione_costo_lavoro,
+        nota AS note
+    FROM read_parquet('{support.food_retail.mart.mart_retail_alimentare_dettaglio}')
+    WHERE anno BETWEEN 2008 AND {year}
 )
 
 SELECT
@@ -76,10 +99,13 @@ SELECT
     ROUND(va_per_ora_eur, 2) AS va_per_ora_eur,
     fonte,
     metodo,
+    definizione_costo_lavoro,
     note
 FROM (
     SELECT * FROM agricoltura
     UNION ALL
     SELECT * FROM sbs
+    UNION ALL
+    SELECT * FROM retail
 )
 ORDER BY anno, stadio, classificazione, codice

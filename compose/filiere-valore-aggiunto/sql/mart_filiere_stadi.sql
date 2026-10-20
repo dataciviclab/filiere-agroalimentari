@@ -1,6 +1,5 @@
--- Valore aggiunto per stadio: agricoltura (RICA) + trasformazione/retail (SBS).
--- Agricoltura: VA e costo lavoro medi per OTE × aziende rappresentate.
--- Trasformazione: NACE 10+11+12. Retail: NACE 47.
+-- Valore aggiunto per stadio: agricoltura (RICA), trasformazione (SBS 10/11/12)
+-- e retail alimentare (Eurostat SBS 4711 + 4721-4725 + 4729 + 4781).
 -- Nessun margine di prodotto: è un aggregato per stadio.
 
 WITH rica AS (
@@ -25,6 +24,7 @@ agricoltura AS (
         SUM(COALESCE(aziende, 0)) AS imprese,
         'RICA-CREA AREA' AS fonte,
         'modelled_universe' AS metodo,
+        'rica_costo_lavoro' AS definizione_costo_lavoro,
         'Stima modellata dal campione RICA; medie aziendali per OTE.' AS note
     FROM rica
     GROUP BY anno
@@ -33,24 +33,43 @@ agricoltura AS (
 sbs AS (
     SELECT
         anno,
-        CASE WHEN nace_codice = '47' THEN 'retail' ELSE 'trasformazione' END AS stadio,
+        'trasformazione' AS stadio,
         SUM(va_mila_eur) * 1000 AS va_eur,
         SUM(costo_lavoro_mila_eur) * 1000 AS costo_lavoro_eur,
         SUM(ore_migliaia) * 1000 AS ore,
         SUM(imprese) AS imprese,
         'ISTAT SBS' AS fonte,
         'survey' AS metodo,
-        'SBS non copre agricoltura; imprese con dipendenti.' AS note
+        'istat_sbs_personnel_costs' AS definizione_costo_lavoro,
+        'SBS; imprese con dipendenti; NACE 10/11/12.' AS note
     FROM read_parquet('{support.sbs_filiere.path}')
     WHERE anno BETWEEN 2008 AND {year}
-      AND nace_codice IN ('10', '11', '12', '47')
-    GROUP BY anno, CASE WHEN nace_codice = '47' THEN 'retail' ELSE 'trasformazione' END
+      AND nace_codice IN ('10', '11', '12')
+    GROUP BY anno
+),
+
+retail AS (
+    SELECT
+        anno,
+        'retail_alimentare' AS stadio,
+        va_eur,
+        costo_lavoro_eur,
+        ore,
+        imprese,
+        fonte,
+        'survey' AS metodo,
+        definizione_costo_lavoro,
+        nota AS note
+    FROM read_parquet('{support.food_retail.mart.mart_retail_alimentare}')
+    WHERE anno BETWEEN 2008 AND {year}
 ),
 
 unione AS (
     SELECT * FROM agricoltura
     UNION ALL
     SELECT * FROM sbs
+    UNION ALL
+    SELECT * FROM retail
 )
 
 SELECT
@@ -64,6 +83,7 @@ SELECT
     ROUND(va_eur / NULLIF(ore, 0), 2) AS va_per_ora_eur,
     fonte,
     metodo,
+    definizione_costo_lavoro,
     note
 FROM unione
 ORDER BY anno, stadio

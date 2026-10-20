@@ -1,0 +1,95 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "eurostat_sbs_food_retail"
+  source_id: "eurostat_sbs"
+  tags: [economia, agricoltura, filiera, retail, alimentare, sbs, eurostat]
+  category: economia
+  description: "Retail alimentare italiano: valore aggiunto, costo del lavoro, ore e imprese per NACE 4711, 4721-4725, 4729 e 4781. Fonti Eurostat SBS (sbs_na_dt_r2 2008-2020; sbs_ovw_act 2021-2024)."
+  years: [2024]
+  time_coverage:
+    start_year: 2008
+    end_year: 2024
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "eurostat_sbs_food_retail"
+      type: "script"
+      args:
+        command: "python3 extract.py raw.csv"
+        output: "raw.csv"
+      client:
+        timeout: 300
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: all
+    delim: ","
+    encoding: "utf-8"
+    header: true
+    trim_whitespace: true
+  required_columns:
+    - anno
+    - nace_codice
+    - nace
+    - va_eur
+    - costo_lavoro_eur
+    - imprese
+    - fonte_dataset
+    - definizione_costo_lavoro
+  validate:
+    min_rows: 120
+    not_null:
+      - anno
+      - nace_codice
+      - nace
+      - va_eur
+      - costo_lavoro_eur
+      - imprese
+      - fonte_dataset
+      - definizione_costo_lavoro
+    primary_key: [anno, nace_codice]
+    ranges:
+      va_eur: {min: 0}
+      costo_lavoro_eur: {min: 0}
+      ore: {min: 0}
+      imprese: {min: 1}
+
+mart:
+  tables:
+    - name: "mart_retail_alimentare"
+      sql: "sql/mart_retail_alimentare.sql"
+    - name: "mart_retail_alimentare_dettaglio"
+      sql: "sql/mart_retail_alimentare_dettaglio.sql"
+  required_tables:
+    - "mart_retail_alimentare"
+    - "mart_retail_alimentare_dettaglio"
+  validate:
+    table_rules:
+      mart_retail_alimentare:
+        required_columns:
+          [anno, va_eur, costo_lavoro_eur, quota_lavoro_pct, imprese, nace_coperti]
+        primary_key: [anno]
+        min_rows: 15
+        ranges:
+          quota_lavoro_pct: {min: 0, max: 100}
+          va_per_ora_eur: {min: 1, max: 500}
+      mart_retail_alimentare_dettaglio:
+        required_columns:
+          [anno, nace_codice, nace, segmento, va_eur, quota_lavoro_pct]
+        primary_key: [anno, nace_codice]
+        min_rows: 120
+        ranges:
+          quota_lavoro_pct: {min: 0, max: 100}
+          va_per_ora_eur: {min: 1, max: 500}
+
+validation:
+  fail_on_error: true
+
+output:
+  artifacts: standard

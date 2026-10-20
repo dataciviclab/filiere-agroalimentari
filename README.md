@@ -22,10 +22,12 @@ consumo e valore aggiunto per stadio.
 | `rica-area-redditi` | CREA-PB | Redditi, VA, costi e aiuti per OTE/dimensione/regione | 9.673 | 2008-2024 |
 | `istat-nic-prezzi-consumo` | ISTAT/DBnomics | NIC mensile, 6 categorie, basi 2015/2025 | 762 | 2016-2026 |
 | `eurostat-hicp-prezzi-consumo` | Eurostat | HICP mensile, 6 categorie | 720 | 2016-2025 |
-| `compose/filiere-valore-aggiunto` | RICA + SBS | VA per stadio: agricoltura, trasformazione, retail | 286 mart | 2008-2024 |
+| `eurostat-sbs-food-retail` | Eurostat SBS | VA, lavoro, ore e imprese del retail alimentare (8 NACE) | 135 | 2008-2024 |
+| `compose/filiere-valore-aggiunto` | RICA + SBS + Eurostat SBS | VA per stadio: agricoltura, trasformazione, retail alimentare | 404 mart | 2008-2024 |
 
 RICA rappresenta circa **566.000 aziende agricole** (universo modellato dal
-campione). Il compose legge SBS già processato da GCS come support `external`.
+campione). Il compose legge SBS già processato da GCS come support `external`
+e il retail alimentare da Eurostat SBS locale.
 
 ## Esempi di domande
 
@@ -77,8 +79,10 @@ make run-all
 ## Cosa non possiamo dire
 
 Con i dati attuali non ricostruiamo margini di prodotto, prezzi retail assoluti
-nazionali o distribuzione PAC per beneficiario. Le differenze tra indici non
-sono margini; basi 2015/2020/2025 restano separate.
+nazionali o distribuzione PAC per beneficiario. Il retail alimentare è un core
+proxy: esclude online, tabacco e commercio non-food; `4711` è *predominantly
+food* e può includere assortimenti non-food. Le differenze tra indici non sono
+margini; basi 2015/2020/2025 restano separate.
 
 ## Partecipa
 

@@ -1,0 +1,4 @@
+# Raw CSV cache (mai versionato)
+raw.csv
+data/
+__pycache__/

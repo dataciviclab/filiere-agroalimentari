@@ -1,7 +1,7 @@
 """Smoke test del contratto repo: dataset attesi e file minimi.
 
 Non duplica la validazione del toolkit (preflight/run): verifica solo che il
-repo esponga i 5 dataset e i file dichiarati.
+repo esponga i 5 dataset, il compose e i file dichiarati.
 """
 
 from __future__ import annotations
@@ -18,6 +18,7 @@ EXPECTED_DATASETS = {
     "istat-prezzi-agricoli",
     "rica-area-redditi",
 }
+EXPECTED_COMPOSES = {"filiere-valore-aggiunto"}
 
 
 @pytest.mark.contract
@@ -38,3 +39,17 @@ def test_dataset_minimum_files() -> None:
 @pytest.mark.contract
 def test_rica_adapter_present() -> None:
     assert (ROOT / "datasets" / "rica-area-redditi" / "extract.py").is_file()
+
+
+@pytest.mark.contract
+def test_expected_composes_present() -> None:
+    dirs = {p.name for p in (ROOT / "compose").iterdir() if p.is_dir()}
+    assert dirs == EXPECTED_COMPOSES, f"Compose inattesi: {dirs ^ EXPECTED_COMPOSES}"
+
+
+@pytest.mark.contract
+def test_compose_minimum_files() -> None:
+    for slug in EXPECTED_COMPOSES:
+        base = ROOT / "compose" / slug
+        assert (base / "dataset.yml").is_file(), f"{slug}: manca dataset.yml"
+        assert list((base / "sql").glob("mart_*.sql")), f"{slug}: manca sql/mart_*.sql"

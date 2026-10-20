@@ -21,6 +21,11 @@ consumo. È un repo multi-dataset del DataCivicLab.
 | `istat-nic-prezzi-consumo` | NIC mensile, 6 categorie alimentari, basi 2015/2025 | 2016-2026 |
 | `eurostat-hicp-prezzi-consumo` | HICP mensile, 6 categorie alimentari | 2016-2025 |
 
+## Compose
+
+- `compose/filiere-valore-aggiunto` — valore aggiunto per stadio: agricoltura
+  (RICA), trasformazione e retail (SBS letto da GCS come support external).
+
 ## Esempi di domande
 
 - La ragione di scambio output/input si sta aprendo o chiudendo?

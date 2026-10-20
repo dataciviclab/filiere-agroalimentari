@@ -11,6 +11,12 @@ Catalogo dei dataset e dei mart del repo. Il registry pubblico è
 | `istat-nic-prezzi-consumo` | ISTAT/DBnomics | 2016-2026 | mese × ECOICOP | `mart_prezzi_consumo`, `mart_sintesi` |
 | `eurostat-hicp-prezzi-consumo` | Eurostat | 2016-2025 | mese × COICOP | `mart_hicp_prezzi`, `mart_hicp_sintesi` |
 
+### Compose
+
+| Compose | Fonti | Periodo | Output |
+|---|---|---|---|
+| `compose/filiere-valore-aggiunto` | RICA (agricoltura) + SBS (10/11/12/47, external GCS) | 2024 | `mart_filiere_stadi`, `mart_filiere_dettaglio` |
+
 ## Colonne chiave
 
 - **ISTAT prezzi agricoli**: `tipo` (venduto/acquistato), `categoria_codice`,
@@ -24,6 +30,9 @@ Catalogo dei dataset e dei mart del repo. Il registry pubblico è
   `ap1_eur`, `ap2_eur`, `rn_eur`, `incidenza_aiuti_rn_pct`.
 - **NIC/HICP**: `base_anno`, `codice`, `categoria`, `indice`; i mart aggiungono
   `variazione_anno_prec_pct` e `variazione_mese_prec_pct`.
+- **Compose filiere**: `stadio`, `va_eur`, `costo_lavoro_eur`, `ore`, `imprese`,
+  `quota_lavoro_pct`, `va_per_ora_eur`; il dettaglio aggiunge `classificazione`,
+  `codice`, `nome`.
 
 ## Serie e unità
 

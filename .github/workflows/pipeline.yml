@@ -21,6 +21,7 @@ jobs:
     with:
       repo-slug: "${{ github.event.repository.name }}"
       run-command: "make run-all"
+      detect-paths: "datasets compose"
       extra-env: "TOOLKIT_ALLOW_SCRIPT_SOURCE=1"
     permissions:
       contents: write

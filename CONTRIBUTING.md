@@ -10,6 +10,7 @@
 
 ```
 datasets/<slug>/    dataset.yml + sql/ + notes.md + README.md
+compose/<slug>/     join mart-only tra dataset/support
 docs/               pipeline, metodologia, dataset registry
 registry/           registry.json (generato)
 tests/              smoke test del repo

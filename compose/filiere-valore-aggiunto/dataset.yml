@@ -1,0 +1,48 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "filiere_valore_aggiunto"
+  source_id: "dataciviclab_composite"
+  tags: [economia, agricoltura, filiera, valore-aggiunto, compose, sbs, rica]
+  category: economia
+  description: "Valore aggiunto per stadio della filiera agroalimentare: agricoltura (RICA), trasformazione e retail (SBS)."
+  years: [2024]
+  time_coverage:
+    start_year: 2024
+    end_year: 2024
+
+support:
+  - name: rica
+    type: dataset
+    config: "../../datasets/rica-area-redditi/dataset.yml"
+    years: [2024]
+  - name: sbs_filiere
+    type: external
+    uri: "https://storage.googleapis.com/dataciviclab-mart/istat_sbs_imprese/{year}/mart_sbs_filiere.parquet"
+    years: [2024]
+
+mart:
+  tables:
+    - name: "mart_filiere_stadi"
+      sql: "sql/mart_filiere_stadi.sql"
+    - name: "mart_filiere_dettaglio"
+      sql: "sql/mart_filiere_dettaglio.sql"
+  required_tables:
+    - "mart_filiere_stadi"
+    - "mart_filiere_dettaglio"
+  validate:
+    table_rules:
+      mart_filiere_stadi:
+        required_columns:
+          [anno, stadio, va_eur, costo_lavoro_eur, quota_lavoro_pct, fonte]
+        primary_key: [anno, stadio]
+        min_rows: 3
+      mart_filiere_dettaglio:
+        required_columns:
+          [anno, stadio, classificazione, codice, nome, va_eur, quota_lavoro_pct, fonte]
+        primary_key: [anno, stadio, classificazione, codice]
+        min_rows: 10
+
+validation:
+  fail_on_error: true

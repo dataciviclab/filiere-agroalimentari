@@ -32,6 +32,9 @@ RICA-CREA; non uso commerciale.
    (`A`/`01` assente); vive in `dataset-incubator`.
 6. **Nessun join implicito** tra ECOICOP, NACE e OTE: la bridge di categoria è
    esplicita e vale per trend, non per livelli.
+7. **Compose per stadio**: agricoltura da RICA (OTE), trasformazione e retail da
+   SBS (NACE 10/11/12/47) letto come support `external` da GCS. Non è un margine
+   di prodotto.
 
 ## Revisioni e qualità
 

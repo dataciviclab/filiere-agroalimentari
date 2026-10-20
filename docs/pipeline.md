@@ -28,8 +28,10 @@ Il dataset RICA usa `type: script`: il `Makefile` esporta
 | `rica-area-redditi` | `mart_redditi_anni`, `mart_redditi_comparti`, `mart_aiuti` |
 | `istat-nic-prezzi-consumo` | `mart_prezzi_consumo`, `mart_sintesi` |
 | `eurostat-hicp-prezzi-consumo` | `mart_hicp_prezzi`, `mart_hicp_sintesi` |
+| `compose/filiere-valore-aggiunto` | `mart_filiere_stadi`, `mart_filiere_dettaglio` |
 
-Gli output vivono in `out/` e non vanno committati.
+Gli output vivono in `out/` e non vanno committati. Il compose usa RICA locale
+e SBS come support `external` da GCS.
 
 ## CI
 

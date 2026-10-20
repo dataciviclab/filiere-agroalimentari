@@ -1,41 +1,32 @@
-name: ci
+name: CI
 
 on:
   push:
-    paths:
-      - "datasets/**"
-      - "support/**"
-      - "tests/**"
-      - "**/*.py"
-      - "**/*.yml"
-      - "**/*.yaml"
-      - "**/*.sql"
-      - "pyproject.toml"
-      - "Makefile"
+    branches: [main]
   pull_request:
-    paths:
-      - "datasets/**"
-      - "support/**"
-      - "tests/**"
-      - "**/*.py"
-      - "**/*.yml"
-      - "**/*.yaml"
-      - "**/*.sql"
-      - "pyproject.toml"
-      - "Makefile"
-
-permissions:
-  contents: read
+    branches: [main]
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12"]
     steps:
       - uses: actions/checkout@v7
       - uses: dataciviclab/.github/actions/python-setup@main
         with:
-          install-extras: dev
-      - name: Ruff
-        run: python -m ruff check .
-      - name: Pytest
-        run: python -m pytest tests/ -q
+          python-version: ${{ matrix.python-version }}
+          install-extras: "dev"
+      - uses: dataciviclab/.github/actions/python-ci@main
+        with:
+          lint_paths: "tests/ datasets"
+          mypy_paths: ""
+          test_dir: "tests"
+          pytest_args: "-q"
+
+  validate-config:
+    uses: dataciviclab/.github/.github/workflows/dataset-config-check-reusable.yml@main
+    with:
+      globs: "datasets"
+      years: "from-config"

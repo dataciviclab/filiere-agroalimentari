@@ -3,7 +3,7 @@
 ## Fonti
 
 - `rica`: support `type: dataset`, config `../../datasets/rica-area-redditi/dataset.yml`.
-  Usa `mart_redditi_comparti` (OTE, Italia, 2024).
+  Usa `mart_redditi_comparti` (OTE, Italia, 2008-2024).
 - `sbs_filiere`: support `type: external`, URI GCS del mart `mart_sbs_filiere`
   prodotto da `dataset-incubator/candidates/istat-sbs-imprese`.
   NACE 10 (alimentare), 11 (bevande), 12 (tabacco), 47 (retail).
@@ -26,4 +26,4 @@ aggiornare l'URI e rifare `make check`.
 - RICA: universo modellato dal campione; licenza non commerciale con citazione.
 - SBS: survey, imprese con dipendenti; non copre agricoltura.
 - Nessun join di prodotto e nessun margine: solo stadi.
-- 2024 in v0.
+- 2008-2024; SBS può avere anni mancanti in alcune combinazioni.

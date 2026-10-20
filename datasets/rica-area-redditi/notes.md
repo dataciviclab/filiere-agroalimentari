@@ -50,7 +50,7 @@ non è consentito l'uso commerciale senza autorizzazione. Il candidate conserva
 ## Copertura e limiti
 
 - 2008-2024; il 2024 è l'ultimo anno disponibile in AREA alla data di accesso.
-- Le cross-section usano l'anno del run (`{year}`, default 2024).
+- Le cross-section sono estratte per tutti gli anni 2008-2024 (una query per anno/stratificazione).
 - Medie aziendali: non sono margini di prodotto né prezzi.
 - La composizione del campione RICA cambia nel tempo; le variazioni anno su anno
   vanno lette con cautela.

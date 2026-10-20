@@ -13,7 +13,7 @@ SBS non è nel repo: viene letto da GCS come support `external`.
 
 ## Output
 
-- `mart_filiere_stadi`: una riga per stadio, 2024, con VA, costo del lavoro,
+- `mart_filiere_stadi`: una riga per stadio, 2008-2024, con VA, costo del lavoro,
   ore, imprese, quota lavoro e VA per ora.
 - `mart_filiere_dettaglio`: OTE RICA e NACE SBS, stessi indicatori.
 
@@ -23,7 +23,7 @@ SBS non è nel repo: viene letto da GCS come support `external`.
   modellata dall'universo, non un censimento.
 - SBS: imprese con dipendenti; non copre l'agricoltura (`A`/`01`).
 - Non è un margine di filiera: è un aggregato per stadio.
-- 2024 soltanto in v0.
+- 2008-2024; SBS può avere anni mancanti in alcune combinazioni.
 
 ## Support external
 

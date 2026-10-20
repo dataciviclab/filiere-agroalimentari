@@ -96,13 +96,13 @@ mart:
         primary_key: [tipo_dati, anno, indicatore_codice]
         min_rows: 200
       mart_redditi_comparti:
-        required_columns: [stratificazione, territorio_codice, territorio, comparto_codice, comparto, indicatore_codice, indicatore, unita, valore]
-        primary_key: [stratificazione, territorio_codice, comparto_codice, indicatore_codice]
-        min_rows: 500
+        required_columns: [anno, stratificazione, territorio_codice, territorio, comparto_codice, comparto, indicatore_codice, indicatore, unita, valore]
+        primary_key: [anno, stratificazione, territorio_codice, comparto_codice, indicatore_codice]
+        min_rows: 5000
       mart_aiuti:
-        required_columns: [stratificazione, territorio_codice, territorio, comparto_codice, comparto, ap1_eur, ap2_eur, rn_eur, incidenza_aiuti_rn_pct]
-        primary_key: [stratificazione, territorio_codice, comparto_codice]
-        min_rows: 30
+        required_columns: [anno, stratificazione, territorio_codice, territorio, comparto_codice, comparto, ap1_eur, ap2_eur, rn_eur, incidenza_aiuti_rn_pct]
+        primary_key: [anno, stratificazione, territorio_codice, comparto_codice]
+        min_rows: 300
 
 validation:
   fail_on_error: true

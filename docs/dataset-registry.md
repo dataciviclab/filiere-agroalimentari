@@ -15,7 +15,7 @@ Catalogo dei dataset e dei mart del repo. Il registry pubblico è
 
 | Compose | Fonti | Periodo | Output |
 |---|---|---|---|
-| `compose/filiere-valore-aggiunto` | RICA (agricoltura) + SBS (10/11/12/47, external GCS) | 2024 | `mart_filiere_stadi`, `mart_filiere_dettaglio` |
+| `compose/filiere-valore-aggiunto` | RICA (agricoltura) + SBS (10/11/12/47, external GCS) | 2008-2024 | `mart_filiere_stadi`, `mart_filiere_dettaglio` |
 
 ## Colonne chiave
 

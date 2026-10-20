@@ -4,6 +4,7 @@
 
 WITH rica AS (
     SELECT
+        anno,
         comparto_codice,
         comparto,
         MAX(CASE WHEN indicatore_codice = 'VA' THEN valore END) AS va_eur_farm,
@@ -11,12 +12,12 @@ WITH rica AS (
         MAX(CASE WHEN indicatore_codice = 'AZIENDE' THEN valore END) AS aziende
     FROM read_parquet('{support.rica.mart.mart_redditi_comparti}')
     WHERE stratificazione = 'ote'
-    GROUP BY comparto_codice, comparto
+    GROUP BY anno, comparto_codice, comparto
 ),
 
 agricoltura AS (
     SELECT
-        cast({year} AS INTEGER) AS anno,
+        anno,
         'agricoltura' AS stadio,
         'OTE' AS classificazione,
         comparto_codice AS codice,
@@ -57,7 +58,7 @@ sbs AS (
         'survey' AS metodo,
         'SBS; imprese con dipendenti.' AS note
     FROM read_parquet('{support.sbs_filiere.path}')
-    WHERE anno = 2024
+    WHERE anno BETWEEN 2008 AND {year}
       AND nace_codice IN ('10', '11', '12', '47')
 )
 

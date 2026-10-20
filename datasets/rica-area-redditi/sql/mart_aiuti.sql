@@ -1,5 +1,6 @@
 WITH aggregati AS (
     SELECT
+        anno,
         stratificazione,
         territorio_codice,
         territorio,
@@ -14,11 +15,12 @@ WITH aggregati AS (
     FROM clean_input
     WHERE
         stratificazione IN ('ote', 'ude', 'terr')
-        AND anno = {year}
-    GROUP BY stratificazione, territorio_codice, territorio, comparto_codice, comparto
+        AND anno BETWEEN 2008 AND {year}
+    GROUP BY anno, stratificazione, territorio_codice, territorio, comparto_codice, comparto
 )
 
 SELECT
+    anno,
     stratificazione,
     territorio_codice,
     territorio,
@@ -40,3 +42,4 @@ SELECT
         2
     ) AS incidenza_aiuti_rta_pct
 FROM aggregati
+ORDER BY anno, stratificazione, territorio, comparto

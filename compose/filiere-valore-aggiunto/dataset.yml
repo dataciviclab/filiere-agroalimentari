@@ -9,7 +9,7 @@ dataset:
   description: "Valore aggiunto per stadio della filiera agroalimentare: agricoltura (RICA), trasformazione e retail (SBS)."
   years: [2024]
   time_coverage:
-    start_year: 2024
+    start_year: 2008
     end_year: 2024
 
 support:
@@ -37,12 +37,12 @@ mart:
         required_columns:
           [anno, stadio, va_eur, costo_lavoro_eur, quota_lavoro_pct, fonte]
         primary_key: [anno, stadio]
-        min_rows: 3
+        min_rows: 30
       mart_filiere_dettaglio:
         required_columns:
           [anno, stadio, classificazione, codice, nome, va_eur, quota_lavoro_pct, fonte]
         primary_key: [anno, stadio, classificazione, codice]
-        min_rows: 10
+        min_rows: 100
 
 validation:
   fail_on_error: true

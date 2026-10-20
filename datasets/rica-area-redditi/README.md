@@ -19,15 +19,15 @@ italiana della FADN), data warehouse pubblico **AREA**:
 
 ## Perimetro
 
-Italia. Serie nazionale 2008-2024 (universo + campione) e cross-section per
-OTE, dimensione economica e regione nell'anno del run (default 2024). Indicatori: RTA, PLV, AP1, AP2, CC, FC, ST,
+Italia. Serie nazionale 2008-2024 (universo + campione) e cross-section
+2008-2024 per OTE, dimensione economica e regione. Indicatori: RTA, PLV, AP1, AP2, CC, FC, ST,
 VA, CP, PN, CL, RO, RN, aziende rappresentate.
 
 ## Output
 
 - `mart_redditi_anni` — serie nazionale 2008-2024, long, con variazione annua.
-- `mart_redditi_comparti` — cross-section dell'anno del run per OTE/dimensione/regione, long.
-- `mart_aiuti` — anno del run: AP1, AP2, aiuti totali, RN, RTA, VA e incidenza aiuti.
+- `mart_redditi_comparti` — cross-section 2008-2024 per OTE/dimensione/regione, long.
+- `mart_aiuti` — 2008-2024: AP1, AP2, aiuti totali, RN, RTA, VA e incidenza aiuti.
 
 ## Limiti
 

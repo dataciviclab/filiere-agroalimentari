@@ -5,18 +5,19 @@
 
 WITH rica AS (
     SELECT
+        anno,
         comparto_codice,
         MAX(CASE WHEN indicatore_codice = 'VA' THEN valore END) AS va_eur_farm,
         MAX(CASE WHEN indicatore_codice = 'CL' THEN valore END) AS cl_eur_farm,
         MAX(CASE WHEN indicatore_codice = 'AZIENDE' THEN valore END) AS aziende
     FROM read_parquet('{support.rica.mart.mart_redditi_comparti}')
     WHERE stratificazione = 'ote'
-    GROUP BY comparto_codice
+    GROUP BY anno, comparto_codice
 ),
 
 agricoltura AS (
     SELECT
-        cast({year} AS INTEGER) AS anno,
+        anno,
         'agricoltura' AS stadio,
         SUM(COALESCE(va_eur_farm, 0) * COALESCE(aziende, 0)) AS va_eur,
         SUM(COALESCE(cl_eur_farm, 0) * COALESCE(aziende, 0)) AS costo_lavoro_eur,
@@ -26,6 +27,7 @@ agricoltura AS (
         'modelled_universe' AS metodo,
         'Stima modellata dal campione RICA; medie aziendali per OTE.' AS note
     FROM rica
+    GROUP BY anno
 ),
 
 sbs AS (
@@ -40,7 +42,7 @@ sbs AS (
         'survey' AS metodo,
         'SBS non copre agricoltura; imprese con dipendenti.' AS note
     FROM read_parquet('{support.sbs_filiere.path}')
-    WHERE anno = 2024
+    WHERE anno BETWEEN 2008 AND {year}
       AND nace_codice IN ('10', '11', '12', '47')
     GROUP BY anno, CASE WHEN nace_codice = '47' THEN 'retail' ELSE 'trasformazione' END
 ),

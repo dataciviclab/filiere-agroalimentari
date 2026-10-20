@@ -98,39 +98,19 @@ QUERIES = [
             "filter[IdRegioneUE][]": "all",
         },
     ),
-    (
-        "universo",
-        "ote",
-        REPORT_YEAR,
-        {
-            "filter[Stratificazione]": "ote",
-            "filter[TipoDati]": "universo",
-            "filter[Anno]": str(REPORT_YEAR),
-            "filter[IdRegioneUE]": "all",
-        },
-    ),
-    (
-        "universo",
-        "ude",
-        REPORT_YEAR,
-        {
-            "filter[Stratificazione]": "ude",
-            "filter[TipoDati]": "universo",
-            "filter[Anno]": str(REPORT_YEAR),
-            "filter[IdRegioneUE]": "all",
-        },
-    ),
-    (
-        "universo",
-        "terr",
-        REPORT_YEAR,
-        {
-            "filter[Stratificazione]": "terr",
-            "filter[TipoDati]": "universo",
-            "filter[Anno]": str(REPORT_YEAR),
-        },
-    ),
 ]
+
+# Cross-section per OTE, dimensione e regione: una query per anno.
+for _year in range(2008, REPORT_YEAR + 1):
+    for _strat in ("ote", "ude", "terr"):
+        _params = {
+            "filter[Stratificazione]": _strat,
+            "filter[TipoDati]": "universo",
+            "filter[Anno]": str(_year),
+        }
+        if _strat != "terr":
+            _params["filter[IdRegioneUE]"] = "all"
+        QUERIES.append(("universo", _strat, _year, _params))
 
 FIELDNAMES = [
     "tipo_dati",

@@ -1,19 +1,18 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "repo": "filiere-agroalimentari",
   "source_repo": "dataciviclab/filiere-agroalimentari",
-  "updated_at": "2026-11-01",
+  "updated_at": "2026-11-24",
+  "gcs": {
+    "clean": "year",
+    "prefix": "filiere-agroalimentari/"
+  },
   "datasets": [
     {
       "slug": "eurostat_hicp_prezzi_consumo",
       "name": "Eurostat Hicp Prezzi Consumo",
       "description": "Indice armonizzato dei prezzi al consumo (HICP) per le categorie alimentari COICOP, Italia. Benchmark Eurostat separato da NIC e dai prezzi alla produzione.",
-      "source": "",
       "source_id": "eurostat",
-      "period": {
-        "start": 2016,
-        "end": 2025
-      },
       "tags": [
         "economia",
         "agricoltura",
@@ -24,121 +23,107 @@
         "coicop"
       ],
       "category": "economia",
+      "period": {
+        "start": 2016,
+        "end": 2025
+      },
+      "partitions": {
+        "2025": 720
+      },
       "columns": [
         {
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "",
           "semantic_type": "year"
         },
         {
           "name": "mese",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "",
           "semantic_type": "month"
         },
         {
           "name": "data",
           "type": "DATE",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "codice",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "categoria",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "indice",
           "type": "DOUBLE",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         },
         {
           "name": "unita",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "base_anno",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         },
         {
           "name": "serie_id",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "fonte_id",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "metodo_calcolo",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "qualita",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "copertura",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "limitazioni",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "fonte",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         }
       ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/filiere-agroalimentari/eurostat_hicp_prezzi_consumo/2025/eurostat_hicp_prezzi_consumo_2025_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "incubating",
       "mart_refs": [
         "eurostat_hicp_prezzi_consumo__mart_hicp_prezzi",
         "eurostat_hicp_prezzi_consumo__mart_hicp_sintesi"
-      ]
+      ],
+      "last_run": {
+        "at": "2026-11-24T23:34:55.147740+00:00",
+        "year": 2025,
+        "status": "SUCCESS"
+      }
     },
     {
       "slug": "eurostat_prezzi_agricoli",
       "name": "Eurostat Prezzi Agricoli",
       "description": "Prezzi assoluti annuali dei prodotti agricoli alla produzione in Italia, in EUR per 100 kg/litri/pezzi. Copre colture e prodotti animali, 2000-2024. Fonte Eurostat.",
-      "source": "",
       "source_id": "eurostat",
-      "period": {
-        "start": 2000,
-        "end": 2024
-      },
       "tags": [
         "economia",
         "agricoltura",
@@ -148,73 +133,67 @@
         "filiera"
       ],
       "category": "economia",
+      "period": {
+        "start": 2000,
+        "end": 2024
+      },
+      "partitions": {
+        "2024": 554
+      },
       "columns": [
         {
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "",
           "semantic_type": "year"
         },
         {
           "name": "gruppo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "",
           "semantic_type": "gruppo_parlamentare"
         },
         {
           "name": "prodotto_codice",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "prodotto",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "unita",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "valore",
           "type": "DOUBLE",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         },
         {
           "name": "flag",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         }
       ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/filiere-agroalimentari/eurostat_prezzi_agricoli/2024/eurostat_prezzi_agricoli_2024_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "incubating",
       "mart_refs": [
         "eurostat_prezzi_agricoli__mart_prezzi_prodotti",
         "eurostat_prezzi_agricoli__mart_copertura"
-      ]
+      ],
+      "last_run": {
+        "at": "2026-11-24T23:34:59.672308+00:00",
+        "year": 2024,
+        "status": "SUCCESS"
+      }
     },
     {
       "slug": "eurostat_sbs_food_retail",
       "name": "Eurostat Sbs Food Retail",
       "description": "Retail alimentare italiano: valore aggiunto, costo del lavoro, ore e imprese per NACE 4711, 4721-4725, 4729 e 4781. Fonti Eurostat SBS (sbs_na_dt_r2 2008-2020; sbs_ovw_act 2021-2024).",
-      "source": "",
       "source_id": "eurostat_sbs",
-      "period": {
-        "start": 2008,
-        "end": 2024
-      },
       "tags": [
         "economia",
         "agricoltura",
@@ -225,114 +204,101 @@
         "eurostat"
       ],
       "category": "economia",
+      "period": {
+        "start": 2008,
+        "end": 2024
+      },
+      "partitions": {
+        "2024": 135
+      },
       "columns": [
         {
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "",
           "semantic_type": "year"
         },
         {
           "name": "nace_codice",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "nace",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "segmento",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "va_eur",
           "type": "DOUBLE",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         },
         {
           "name": "costo_lavoro_eur",
           "type": "DOUBLE",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         },
         {
           "name": "ore",
           "type": "DOUBLE",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         },
         {
           "name": "imprese",
           "type": "DOUBLE",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         },
         {
           "name": "quota_lavoro_pct",
           "type": "DOUBLE",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         },
         {
           "name": "va_per_ora_eur",
           "type": "DOUBLE",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         },
         {
           "name": "fonte",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "fonte_dataset",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "definizione_costo_lavoro",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "nota",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         }
       ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/filiere-agroalimentari/eurostat_sbs_food_retail/2024/eurostat_sbs_food_retail_2024_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "incubating",
       "mart_refs": [
         "eurostat_sbs_food_retail__mart_retail_alimentare",
         "eurostat_sbs_food_retail__mart_retail_alimentare_dettaglio"
-      ]
+      ],
+      "last_run": {
+        "at": "2026-11-24T23:35:02.846220+00:00",
+        "year": 2024,
+        "status": "SUCCESS"
+      }
     },
     {
       "slug": "filiere_valore_aggiunto",
       "name": "Filiere Valore Aggiunto",
       "description": "Valore aggiunto per stadio della filiera agroalimentare: agricoltura (RICA), trasformazione (SBS NACE 10/11/12) e retail alimentare (Eurostat SBS 4711 + 4721-4725 + 4729 + 4781).",
-      "source": "",
       "source_id": "dataciviclab_composite",
-      "period": {
-        "start": 2008,
-        "end": 2024
-      },
       "tags": [
         "economia",
         "agricoltura",
@@ -343,22 +309,25 @@
         "rica"
       ],
       "category": "economia",
-      "stage": "incubating",
+      "period": {
+        "start": 2008,
+        "end": 2024
+      },
       "mart_refs": [
         "filiere_valore_aggiunto__mart_filiere_stadi",
         "filiere_valore_aggiunto__mart_filiere_dettaglio"
-      ]
+      ],
+      "last_run": {
+        "at": "2026-11-24T23:38:16.084278+00:00",
+        "year": 2024,
+        "status": "SUCCESS"
+      }
     },
     {
       "slug": "istat_nic_prezzi_consumo",
       "name": "Istat Nic Prezzi Consumo",
       "description": "Indici NIC dei prezzi al consumo per le categorie alimentari ECOICOP, Italia. Base 2015 (2016-2025) e base 2025 (2026+) tenute separate. Fonte ISTAT via DBnomics.",
-      "source": "",
       "source_id": "istat_dbnomics",
-      "period": {
-        "start": 2016,
-        "end": 2026
-      },
       "tags": [
         "economia",
         "agricoltura",
@@ -369,121 +338,107 @@
         "ecoicop"
       ],
       "category": "economia",
+      "period": {
+        "start": 2016,
+        "end": 2026
+      },
+      "partitions": {
+        "2026": 780
+      },
       "columns": [
         {
           "name": "base_anno",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         },
         {
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "",
           "semantic_type": "year"
         },
         {
           "name": "mese",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "",
           "semantic_type": "month"
         },
         {
           "name": "data",
           "type": "DATE",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "codice",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "categoria",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "indice",
           "type": "DOUBLE",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         },
         {
           "name": "unita",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "serie_id",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "fonte_id",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "metodo_calcolo",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "qualita",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "copertura",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "limitazioni",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "fonte",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         }
       ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/filiere-agroalimentari/istat_nic_prezzi_consumo/2026/istat_nic_prezzi_consumo_2026_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "incubating",
       "mart_refs": [
         "istat_nic_prezzi_consumo__mart_prezzi_consumo",
         "istat_nic_prezzi_consumo__mart_sintesi"
-      ]
+      ],
+      "last_run": {
+        "at": "2026-11-24T23:35:04.924767+00:00",
+        "year": 2026,
+        "status": "SUCCESS"
+      }
     },
     {
       "slug": "istat_prezzi_agricoli",
       "name": "Istat Prezzi Agricoli",
       "description": "Indici mensili dei prezzi dei prodotti venduti e acquistati dagli agricoltori italiani (base 2020=100), per gruppi di prodotto e categorie di input. Fonte ISTAT SDMX.",
-      "source": "",
       "source_id": "istat_sdmx",
-      "period": {
-        "start": 2020,
-        "end": 2026
-      },
       "tags": [
         "economia",
         "agricoltura",
@@ -494,79 +449,72 @@
         "output"
       ],
       "category": "economia",
+      "period": {
+        "start": 2020,
+        "end": 2026
+      },
+      "partitions": {
+        "2026": 4290
+      },
       "columns": [
         {
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "",
           "semantic_type": "year"
         },
         {
           "name": "mese",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "",
           "semantic_type": "month"
         },
         {
           "name": "data",
           "type": "DATE",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "tipo",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "categoria_codice",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "categoria",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "categoria_label_raw",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "indice",
           "type": "DOUBLE",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         }
       ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/filiere-agroalimentari/istat_prezzi_agricoli/2026/istat_prezzi_agricoli_2026_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "incubating",
       "mart_refs": [
         "istat_prezzi_agricoli__mart_prezzi_mensili",
         "istat_prezzi_agricoli__mart_ragione_scambio"
-      ]
+      ],
+      "last_run": {
+        "at": "2026-11-24T23:35:23.470865+00:00",
+        "year": 2026,
+        "status": "SUCCESS"
+      }
     },
     {
       "slug": "rica_area_redditi",
       "name": "Rica Area Redditi",
       "description": "RICA/AREA (CREA-PB): risultati economici medi delle aziende agricole italiane, 2008-2024. Redditi, valore aggiunto, costi e aiuti per anno, OTE, dimensione economica e regione. Universo e campione separati.",
-      "source": "",
       "source_id": "rica_crea",
-      "period": {
-        "start": 2008,
-        "end": 2024
-      },
       "tags": [
         "economia",
         "agricoltura",
@@ -578,141 +526,127 @@
         "territori"
       ],
       "category": "economia",
+      "period": {
+        "start": 2008,
+        "end": 2024
+      },
+      "partitions": {
+        "2024": 9673
+      },
       "columns": [
         {
           "name": "tipo_dati",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "stratificazione",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "",
           "semantic_type": "year"
         },
         {
           "name": "territorio_codice",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "territorio",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "comparto_codice",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "comparto",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "indicatore_codice",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "indicatore",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "",
           "semantic_type": "indicatore_code"
         },
         {
           "name": "unita",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "valore",
           "type": "DOUBLE",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         },
         {
           "name": "metodo_calcolo",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "qualita",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "fonte_id",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "serie_id",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "copertura",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "limitazioni",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "fonte",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "url",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "data_accesso",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         }
       ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/filiere-agroalimentari/rica_area_redditi/2024/rica_area_redditi_2024_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "incubating",
       "mart_refs": [
         "rica_area_redditi__mart_redditi_anni",
         "rica_area_redditi__mart_redditi_comparti",
         "rica_area_redditi__mart_aiuti"
-      ]
+      ],
+      "last_run": {
+        "at": "2026-11-24T23:35:43.985072+00:00",
+        "year": 2024,
+        "status": "SUCCESS"
+      }
     }
   ],
   "marts": [
@@ -720,478 +654,179 @@
       "slug": "eurostat_hicp_prezzi_consumo__mart_hicp_prezzi",
       "dataset": "eurostat_hicp_prezzi_consumo",
       "table": "mart_hicp_prezzi",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/filiere-agroalimentari/eurostat_hicp_prezzi_consumo/2025/mart_hicp_prezzi.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2025,
+      "primary_key": [
+        "anno",
+        "mese",
+        "codice"
+      ]
     },
     {
       "slug": "eurostat_hicp_prezzi_consumo__mart_hicp_sintesi",
       "dataset": "eurostat_hicp_prezzi_consumo",
       "table": "mart_hicp_sintesi",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/filiere-agroalimentari/eurostat_hicp_prezzi_consumo/2025/mart_hicp_sintesi.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2025,
+      "primary_key": [
+        "codice"
+      ]
     },
     {
       "slug": "eurostat_prezzi_agricoli__mart_copertura",
       "dataset": "eurostat_prezzi_agricoli",
       "table": "mart_copertura",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/filiere-agroalimentari/eurostat_prezzi_agricoli/2024/mart_copertura.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2024,
+      "primary_key": [
+        "gruppo",
+        "prodotto_codice"
+      ]
     },
     {
       "slug": "eurostat_prezzi_agricoli__mart_prezzi_prodotti",
       "dataset": "eurostat_prezzi_agricoli",
       "table": "mart_prezzi_prodotti",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/filiere-agroalimentari/eurostat_prezzi_agricoli/2024/mart_prezzi_prodotti.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2024,
+      "primary_key": [
+        "anno",
+        "prodotto_codice"
+      ]
     },
     {
       "slug": "eurostat_sbs_food_retail__mart_retail_alimentare",
       "dataset": "eurostat_sbs_food_retail",
       "table": "mart_retail_alimentare",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/filiere-agroalimentari/eurostat_sbs_food_retail/2024/mart_retail_alimentare.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2024,
+      "primary_key": [
+        "anno"
+      ]
     },
     {
       "slug": "eurostat_sbs_food_retail__mart_retail_alimentare_dettaglio",
       "dataset": "eurostat_sbs_food_retail",
       "table": "mart_retail_alimentare_dettaglio",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/filiere-agroalimentari/eurostat_sbs_food_retail/2024/mart_retail_alimentare_dettaglio.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2024,
+      "primary_key": [
+        "anno",
+        "nace_codice"
+      ]
     },
     {
       "slug": "filiere_valore_aggiunto__mart_filiere_dettaglio",
       "dataset": "filiere_valore_aggiunto",
       "table": "mart_filiere_dettaglio",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/filiere-agroalimentari/filiere_valore_aggiunto/2024/mart_filiere_dettaglio.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2024,
+      "primary_key": [
+        "anno",
+        "stadio",
+        "classificazione",
+        "codice"
+      ]
     },
     {
       "slug": "filiere_valore_aggiunto__mart_filiere_stadi",
       "dataset": "filiere_valore_aggiunto",
       "table": "mart_filiere_stadi",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/filiere-agroalimentari/filiere_valore_aggiunto/2024/mart_filiere_stadi.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2024,
+      "primary_key": [
+        "anno",
+        "stadio"
+      ]
     },
     {
       "slug": "istat_nic_prezzi_consumo__mart_prezzi_consumo",
       "dataset": "istat_nic_prezzi_consumo",
       "table": "mart_prezzi_consumo",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/filiere-agroalimentari/istat_nic_prezzi_consumo/2026/mart_prezzi_consumo.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "base_anno",
+        "anno",
+        "mese",
+        "codice"
+      ]
     },
     {
       "slug": "istat_nic_prezzi_consumo__mart_sintesi",
       "dataset": "istat_nic_prezzi_consumo",
       "table": "mart_sintesi",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/filiere-agroalimentari/istat_nic_prezzi_consumo/2026/mart_sintesi.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "base_anno",
+        "codice"
+      ]
     },
     {
       "slug": "istat_prezzi_agricoli__mart_prezzi_mensili",
       "dataset": "istat_prezzi_agricoli",
       "table": "mart_prezzi_mensili",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/filiere-agroalimentari/istat_prezzi_agricoli/2026/mart_prezzi_mensili.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "anno",
+        "mese",
+        "tipo",
+        "categoria_codice"
+      ]
     },
     {
       "slug": "istat_prezzi_agricoli__mart_ragione_scambio",
       "dataset": "istat_prezzi_agricoli",
       "table": "mart_ragione_scambio",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/filiere-agroalimentari/istat_prezzi_agricoli/2026/mart_ragione_scambio.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "anno",
+        "mese"
+      ]
     },
     {
       "slug": "rica_area_redditi__mart_aiuti",
       "dataset": "rica_area_redditi",
       "table": "mart_aiuti",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/filiere-agroalimentari/rica_area_redditi/2024/mart_aiuti.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2024,
+      "primary_key": [
+        "anno",
+        "stratificazione",
+        "territorio_codice",
+        "comparto_codice"
+      ]
     },
     {
       "slug": "rica_area_redditi__mart_redditi_anni",
       "dataset": "rica_area_redditi",
       "table": "mart_redditi_anni",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/filiere-agroalimentari/rica_area_redditi/2024/mart_redditi_anni.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2024,
+      "primary_key": [
+        "tipo_dati",
+        "anno",
+        "indicatore_codice"
+      ]
     },
     {
       "slug": "rica_area_redditi__mart_redditi_comparti",
       "dataset": "rica_area_redditi",
       "table": "mart_redditi_comparti",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/filiere-agroalimentari/rica_area_redditi/2024/mart_redditi_comparti.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2024,
+      "primary_key": [
+        "anno",
+        "stratificazione",
+        "territorio_codice",
+        "comparto_codice",
+        "indicatore_codice"
+      ]
     }
   ],
-  "signals": [
-    {
-      "id": "compose:filiere_valore_aggiunto",
-      "source_id": "dataciviclab_composite",
-      "status": "ok",
-      "label": "filiere_valore_aggiunto",
-      "detail": "anno 2024 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20261101T120956Z_0c39c37c",
-        "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 100
-        },
-        "output_rows": {
-          "mart": 404
-        },
-        "output_bytes": {
-          "mart": 15607
-        },
-        "started_at": "2026-11-01T12:09:56.183816+00:00",
-        "finished_at": "2026-11-01T12:09:57.822040+00:00",
-        "duration_seconds": 1.638
-      }
-    },
-    {
-      "id": "eurostat_hicp_prezzi_consumo",
-      "source_id": "eurostat",
-      "status": "ok",
-      "label": "eurostat_hicp_prezzi_consumo",
-      "detail": "anno 2025 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20261101T120701Z_3d3fd301",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 2160,
-          "clean": 720,
-          "mart": 726
-        },
-        "output_bytes": {
-          "raw": 66142,
-          "clean": 6601,
-          "mart": 10596
-        },
-        "started_at": "2026-11-01T12:07:01.115452+00:00",
-        "finished_at": "2026-11-01T12:07:03.528254+00:00",
-        "duration_seconds": 2.413
-      }
-    },
-    {
-      "id": "eurostat_prezzi_agricoli",
-      "source_id": "eurostat",
-      "status": "ok",
-      "label": "eurostat_prezzi_agricoli",
-      "detail": "anno 2024 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20261101T120704Z_f4b3d564",
-        "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 400,
-          "clean": 554,
-          "mart": 271
-        },
-        "output_bytes": {
-          "raw": 17977,
-          "clean": 4404,
-          "mart": 7863
-        },
-        "started_at": "2026-11-01T12:07:04.991533+00:00",
-        "finished_at": "2026-11-01T12:07:07.580054+00:00",
-        "duration_seconds": 2.589
-      }
-    },
-    {
-      "id": "eurostat_sbs_food_retail",
-      "source_id": "eurostat_sbs",
-      "status": "ok",
-      "label": "eurostat_sbs_food_retail",
-      "detail": "anno 2024 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20261101T120708Z_39989b3a",
-        "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 135,
-          "clean": 135,
-          "mart": 152
-        },
-        "output_bytes": {
-          "raw": 14202,
-          "clean": 6144,
-          "mart": 9885
-        },
-        "started_at": "2026-11-01T12:07:08.051507+00:00",
-        "finished_at": "2026-11-01T12:07:09.663806+00:00",
-        "duration_seconds": 1.612
-      }
-    },
-    {
-      "id": "istat_nic_prezzi_consumo",
-      "source_id": "istat_dbnomics",
-      "status": "ok",
-      "label": "istat_nic_prezzi_consumo",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20261101T120710Z_c3743d0e",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 720,
-          "clean": 780,
-          "mart": 792
-        },
-        "output_bytes": {
-          "raw": 61764,
-          "clean": 7180,
-          "mart": 11320
-        },
-        "started_at": "2026-11-01T12:07:10.158024+00:00",
-        "finished_at": "2026-11-01T12:07:13.402570+00:00",
-        "duration_seconds": 3.245
-      }
-    },
-    {
-      "id": "istat_prezzi_agricoli",
-      "source_id": "istat_sdmx",
-      "status": "ok",
-      "label": "istat_prezzi_agricoli",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20261101T120713Z_8b071af7",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 1716,
-          "clean": 4290,
-          "mart": 4368
-        },
-        "output_bytes": {
-          "raw": 664668,
-          "clean": 14049,
-          "mart": 36587
-        },
-        "started_at": "2026-11-01T12:07:13.867837+00:00",
-        "finished_at": "2026-11-01T12:07:29.526879+00:00",
-        "duration_seconds": 15.659
-      }
-    },
-    {
-      "id": "rica_area_redditi",
-      "source_id": "rica_crea",
-      "status": "ok",
-      "label": "rica_area_redditi",
-      "detail": "anno 2024 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20261101T120730Z_4a16a346",
-        "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 9673,
-          "clean": 9673,
-          "mart": 10285
-        },
-        "output_bytes": {
-          "raw": 2763554,
-          "clean": 89614,
-          "mart": 76500
-        },
-        "started_at": "2026-11-01T12:07:30.036539+00:00",
-        "finished_at": "2026-11-01T12:09:55.706469+00:00",
-        "duration_seconds": 145.67
-      }
-    }
-  ],
-  "codelists": [],
-  "entities": {
-    "entities": {
-      "Gruppo parlamentare": {
-        "entity": "Gruppo parlamentare",
-        "label": "Gruppo parlamentare",
-        "datasets": [
-          {
-            "slug": "eurostat_prezzi_agricoli",
-            "name": "Eurostat Prezzi Agricoli",
-            "column": "gruppo",
-            "semantic_type": "gruppo_parlamentare"
-          }
-        ],
-        "types": {
-          "gruppo_parlamentare": 1
-        }
-      },
-      "Indicatore": {
-        "entity": "Indicatore",
-        "label": "Indicatore",
-        "datasets": [
-          {
-            "slug": "rica_area_redditi",
-            "name": "Rica Area Redditi",
-            "column": "indicatore",
-            "semantic_type": "indicatore_code"
-          }
-        ],
-        "types": {
-          "indicatore_code": 1
-        }
-      },
-      "Tempo": {
-        "entity": "Tempo",
-        "label": "Tempo / data",
-        "datasets": [
-          {
-            "slug": "eurostat_hicp_prezzi_consumo",
-            "name": "Eurostat Hicp Prezzi Consumo",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "eurostat_hicp_prezzi_consumo",
-            "name": "Eurostat Hicp Prezzi Consumo",
-            "column": "mese",
-            "semantic_type": "month"
-          },
-          {
-            "slug": "eurostat_prezzi_agricoli",
-            "name": "Eurostat Prezzi Agricoli",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "eurostat_sbs_food_retail",
-            "name": "Eurostat Sbs Food Retail",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "istat_nic_prezzi_consumo",
-            "name": "Istat Nic Prezzi Consumo",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "istat_nic_prezzi_consumo",
-            "name": "Istat Nic Prezzi Consumo",
-            "column": "mese",
-            "semantic_type": "month"
-          },
-          {
-            "slug": "istat_prezzi_agricoli",
-            "name": "Istat Prezzi Agricoli",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "istat_prezzi_agricoli",
-            "name": "Istat Prezzi Agricoli",
-            "column": "mese",
-            "semantic_type": "month"
-          },
-          {
-            "slug": "rica_area_redditi",
-            "name": "Rica Area Redditi",
-            "column": "anno",
-            "semantic_type": "year"
-          }
-        ],
-        "types": {
-          "year": 6,
-          "month": 3
-        }
-      }
-    },
-    "bridges": [
-      {
-        "from": {
-          "entity": "Indicatore",
-          "dataset": "rica_area_redditi",
-          "via": "indicatore_code"
-        },
-        "to": {
-          "entity": "Progetto",
-          "bridge": "pnrr_indicatori_target",
-          "on": "cup",
-          "semantic_type": "cup_code"
-        }
-      }
-    ]
-  }
+  "checks": [],
+  "codelists": []
 }
